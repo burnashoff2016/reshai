@@ -1,3 +1,4 @@
+import os
 from datetime import date, datetime, time
 
 from django.contrib.auth.decorators import login_required, login_not_required
@@ -10,7 +11,7 @@ from pymongo import MongoClient
 
 
 def get_db_handle():
-    client = MongoClient(host="mongodb://MisterStalker:Zona%4026041986@185.154.193.195:27017/", port=27017)
+    client = MongoClient(host=os.environ.get('MONGODB_CONNECTION_STRING'), port=27017)
     db_handle = client.djangoTutorial.to_do_item
     return db_handle
 
