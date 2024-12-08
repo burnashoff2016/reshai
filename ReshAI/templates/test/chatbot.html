@@ -3,208 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Главная страница</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>ReshAI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background: #f4f4f9;
-            font-family: 'Arial', sans-serif;
-            height: 100vh;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
+            background-color: #f5faff; /* Синий фон */
+            color: #333; /* Тёмный текст */
+            font-family: Arial, sans-serif;
         }
-        .navbar {
-            background-color: #6a11cb;
-            color: #fff;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            text-align: center;
-        }
-        .navbar-nav {
-            margin: 0 auto;
-        }
-        .navbar .navbar-brand {
-            font-size: 1.5rem;
-            color: #fff !important;
-        }
-        .navbar-nav .nav-link {
-            color: #fff !important;
-            padding: 0 15px;
-            font-weight: bold;
-            transition: color 0.3s;
-        }
-        .navbar-nav .nav-link:hover {
-            color: #ffd700;
-        }
+
         .sidebar {
-            width: 350px;
-            background-color: #f8f9fa;
-            position: fixed;
-            top: 56px;
-            left: 0;
-            bottom: 0;
-            overflow-y: auto;
+            background-color: #e7f0ff; /* Светло-синий */
             padding: 20px;
-            border-right: 1px solid #ddd;
+            border-right: 2px solid #cfddee; /* Разделительная линия */
         }
-        .subject-card {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            margin-bottom: 15px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+
+        .subject {
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #d1e9ff; /* Яркий синий */
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            color: #003f7f;
+            transition: background-color 0.3s;
         }
-        .subject-card img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            margin-right: 15px;
+
+        .subject:hover {
+            background-color: #a8d1ff; /* Более яркий при наведении */
         }
-        .subject-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .chat-window {
-            flex: 1;
-            margin-top: 56px;
-            margin-left: 350px;
-            margin-right: 0;
+
+        .chat-container {
+            background-color: #ffffff;
             padding: 20px;
-            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .input-bar {
-            position: fixed;
-            bottom: 0;
-            left: 350px;
-            width: calc(100% - 350px);
-            background-color: #fff;
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-top: 10px;
+            border: 1px solid #cfddee;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        button {
+            margin-top: 10px;
+            background-color: #0066cc;
+            color: white;
             padding: 10px 20px;
-            border-top: 1px solid #ddd;
-            z-index: 1000;
-        }
-        .input-bar .form-control {
-            border-radius: 25px;
-            height: 60px;
-            font-size: 1.2rem;
-            padding-right: 120px; /* Оставляем место для кнопок */
-        }
-        .input-bar .icon-button {
-            position: absolute;
-            right: 100px;
-            top: 10px;
-            background: none;
             border: none;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
         }
-        .input-bar .icon-button img {
-            width: 24px;
-            height: 24px;
-        }
-        .input-bar .btn-send {
-            position: absolute;
-            right: 20px;
-            top: 10px;
-            background-color: #6a11cb;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .input-bar .btn-send img {
-            width: 20px;
-            height: 20px;
-            filter: invert(1);
+
+        button:hover {
+            background-color: #004d99;
         }
     </style>
 </head>
 <body>
-    <!-- Шапка меню -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">ReshAI</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="#">Чат</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Личный кабинет</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Настройки</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Выход</a></li>
-                </ul>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 sidebar">
+                <h4>Предметы</h4>
+                <div class="subject" data-content="math-content">Математика</div>
+                <div class="subject" data-content="physics-content">Физика</div>
+                <div class="subject" data-content="history-content">История</div>
             </div>
-        </div>
-    </nav>
 
-    <!-- Левое меню -->
-    <div class="sidebar">
-        <div class="subject-card">
-            <img src="https://via.placeholder.com/60" alt="Teacher">
-            <div>
-                <h6>Математика</h6>
-                <p class="text-muted mb-0">Последний вопрос: Что такое интеграл?</p>
-            </div>
-        </div>
-        <div class="subject-card">
-            <img src="https://via.placeholder.com/60" alt="Teacher">
-            <div>
-                <h6>Физика</h6>
-                <p class="text-muted mb-0">Последний вопрос: Объясни законы Ньютона.</p>
-            </div>
-        </div>
-        <div class="subject-card">
-            <img src="https://via.placeholder.com/60" alt="Teacher">
-            <div>
-                <h6>Химия</h6>
-                <p class="text-muted mb-0">Какова структура молекулы воды?</p>
+            <!-- Main content -->
+            <div class="col-md-9">
+                <header class="text-center mb-4">
+                    <h1>ReshAI</h1>
+                </header>
+                <div id="main-content" class="content">
+                    <!-- Контент для предметов -->
+                    <div id="math-content" class="chat-container d-none">
+                        <p>Контент для математики</p>
+                        <textarea placeholder="Введите сообщение..."></textarea>
+                        <button>Отправить</button>
+                    </div>
+                    <div id="physics-content" class="chat-container d-none">
+                        <p>Контент для физики</p>
+                        <textarea placeholder="Введите сообщение..."></textarea>
+                        <button>Отправить</button>
+                    </div>
+                    <div id="history-content" class="chat-container d-none">
+                        <p>Контент для истории</p>
+                        <textarea placeholder="Введите сообщение..."></textarea>
+                        <button>Отправить</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Окно взаимодействия с LLM -->
-    <div class="chat-window">
-        <div class="message-container">
-            <div class="mb-4">
-                <p class="bg-light p-3 rounded">Привет! Чем могу помочь?</p>
-            </div>
-            <div class="mb-4">
-                <p class="bg-primary text-white p-3 rounded">Расскажи про законы Ньютона</p>
-            </div>
-        </div>
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const subjects = document.querySelectorAll('.subject'); // Находим все предметы
+            const contentContainers = document.querySelectorAll('.chat-container'); // Находим все контейнеры контента
 
-    <!-- Окно ввода сообщений -->
-    <div class="input-bar">
-        <form>
-            <div class="position-relative">
-                <!-- Поле ввода сообщения -->
-                <input type="text" class="form-control" placeholder="Введите сообщение...">
-                <!-- Кнопка загрузки документа -->
-                <button class="icon-button" type="button" title="Загрузить документ">
-                    <img src="https://cdn-icons-png.flaticon.com/512/84/84154.png" alt="Attachment">
-                </button>
-                <!-- Кнопка загрузки аудио -->
-                <button class="icon-button" type="button" title="Загрузить аудио">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3059/3059493.png" alt="Microphone">
-                </button>
-                <!-- Кнопка отправки -->
-                <button class="btn-send" type="submit">
-                    <img src="https://cdn-icons-png.flaticon.com/512/709/709496.png" alt="Send">
-                </button>
-            </div>
-        </form>
-    </div>
+            subjects.forEach(subject => {
+                subject.addEventListener('click', () => {
+                    const targetId = subject.getAttribute('data-content'); // Получаем id целевого контента
 
-    <!--
+                    // Скрываем все контейнеры
+                    contentContainers.forEach(container => {
+                        container.classList.add('d-none');
+                    });
+
+                    // Показываем выбранный контейнер
+                    const targetContent = document.getElementById(targetId);
+                    if (targetContent) {
+                        targetContent.classList.remove('d-none');
+                    } else {
+                        console.error(`Контейнер с id "${targetId}" не найден.`);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+<!--<img src="https://cdn-icons-png.flaticon.com/512/3914/3914166.png" alt="Upload Document" class="icon" style="width: 30px;">-->
+<!--                    </label>-->
+<!--                    <input type="file" id="upload-document">-->
+<!--                    <label for="upload-audio">-->
+<!--                        <img src="https://cdn-icons-png.flaticon.com/512/3914/3914253.png" alt="Upload Audio" class="icon" style="width: 30px;">-->
+<!--                    </label>-->
+<!--                    <input type="file" id="upload-audio">-->
+<!--                </div>-->
+<!--                <button class="btn btn-primary">-->
+<!--                    <img src="https://cdn-icons-png.flaticon.com/512/9821/9821608.png" alt="Send" style="width: 20px;">-->
