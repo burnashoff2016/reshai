@@ -1,199 +1,410 @@
-{% extends 'base_generic.html' %}
+<!--{% extends 'base_generic.html' %}-->
 
-{% block styles %}
-<style>
-  body,
-  html {
-    height: 100%;
-  }
+<!--{% block styles %}-->
+<!--<style>-->
+<!--  body,-->
+<!--  html {-->
+<!--    height: 100%;-->
+<!--  }-->
 
-  .messages-box {
-    flex: 1;
-    overflow-y: auto;
-  }
+<!--  .messages-box {-->
+<!--    flex: 1;-->
+<!--    overflow-y: auto;-->
+<!--  }-->
 
-  .messages-list {
-    padding-left: 0;
-  }
+<!--  .messages-list {-->
+<!--    padding-left: 0;-->
+<!--  }-->
 
-  .message {
-    margin-bottom: 15px;
-    list-style: none;
-  }
+<!--  .message {-->
+<!--    margin-bottom: 15px;-->
+<!--    list-style: none;-->
+<!--  }-->
 
-  .message-text {
-    padding: 10px;
-    border-radius: 5px;
-  }
+<!--  .message-text {-->
+<!--    padding: 10px;-->
+<!--    border-radius: 5px;-->
+<!--  }-->
 
-  .sent {
-    background-color: #dcf8c6;
-    align-self: flex-end;
-  }
+<!--  .sent {-->
+<!--    background-color: #dcf8c6;-->
+<!--    align-self: flex-end;-->
+<!--  }-->
 
-  .received {
-    background-color: #f1f0f0;
-    align-self: flex-start;
-  }
+<!--  .received {-->
+<!--    background-color: #f1f0f0;-->
+<!--    align-self: flex-start;-->
+<!--  }-->
 
-  .message-form {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 10px;
-    background-color: #f8f9fa;
-  }
+<!--  .message-form {-->
+<!--    display: flex;-->
+<!--    position: fixed;-->
+<!--    bottom: 0;-->
+<!--    left: 0;-->
+<!--    right: 0;-->
+<!--    padding: 10px;-->
+<!--    background-color: #f8f9fa;-->
+<!--  }-->
 
-  .message-input {
-    flex: 1;
-    border-radius: 0;
-    border-right: none;
-  }
+<!--  .message-input {-->
+<!--    flex: 1;-->
+<!--    border-radius: 0;-->
+<!--    border-right: none;-->
+<!--  }-->
 
-  .btn-send {
-    border-radius: 0;
-  }
+<!--  .btn-send {-->
+<!--    border-radius: 0;-->
+<!--  }-->
 
-  .chat-container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-</style>
-{% endblock %}
+<!--  .chat-container {-->
+<!--    height: 100%;-->
+<!--    display: flex;-->
+<!--    flex-direction: column;-->
+<!--  }-->
+<!--</style>-->
+<!--{% endblock %}-->
 
 
-{% block content %}
-<div class="chat-container">
-  <div class="card flex-grow-1">
-    <div class="card-header bg-primary text-white">Chat</div>
-    {% if user.is_authenticated %}
-    <div class="card-header bg-primary text-white"><b>Welcome, {{user.username}}</b> <a style="color: yellow;"
-        href="logout">Logout</a></div>
-    {% else %}
-    <div class="card-header bg-primary text-white"><a style="color: yellow;" href="login">Login</a> <a
-        style="color: yellow;" href="register">Register</a></div>
-    {% endif %}
-    <div class="card-body messages-box">
+<!--{% block content %}-->
+<!--<div class="chat-container">-->
+<!--  <div class="card flex-grow-1">-->
+<!--    <div class="card-header bg-primary text-white">Chat</div>-->
+<!--    {% if user.is_authenticated %}-->
+<!--    <div class="card-header bg-primary text-white"><b>Welcome, {{user.username}}</b> <a style="color: yellow;"-->
+<!--        href="logout">Logout</a></div>-->
+<!--    {% else %}-->
+<!--    <div class="card-header bg-primary text-white"><a style="color: yellow;" href="login">Login</a> <a-->
+<!--        style="color: yellow;" href="register">Register</a></div>-->
+<!--    {% endif %}-->
+<!--    <div class="card-body messages-box">-->
 
-      <ul class="list-unstyled messages-list">
+<!--      <ul class="list-unstyled messages-list">-->
 
-        <!-- <li class="message received">
-          <div class="message-text">
-            <div class="message-sender">
-              <b>AI Chatbot</b>
+<!--        &lt;!&ndash; <li class="message received">-->
+<!--          <div class="message-text">-->
+<!--            <div class="message-sender">-->
+<!--              <b>AI Chatbot</b>-->
+<!--            </div>-->
+<!--            <div class="message-content">-->
+<!--              Hi {{user.username}}, I am your AI Chatbot, you can ask me anything.-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </li> &ndash;&gt;-->
+
+
+<!--        {% for chat in chats %}-->
+<!--        {% if chat.user == request.user %}-->
+
+
+<!--        <li class="message sent">-->
+<!--          <div class="message-text">-->
+<!--            <div class="message-sender">-->
+<!--              <b>You</b>-->
+<!--            </div>-->
+<!--            <div class="message-content">-->
+<!--              {{chat.message}}-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </li>-->
+
+<!--        <li class="message received">-->
+<!--          <div class="message-text">-->
+<!--            <div class="message-sender">-->
+<!--              <b>AI Chatbot</b>-->
+<!--            </div>-->
+<!--            <div class="message-content">-->
+<!--              {{chat.response}}-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </li>-->
+
+<!--        {% endif %}-->
+<!--        {% endfor %}-->
+
+<!--      </ul>-->
+
+<!--    </div>-->
+<!--    <br><br>-->
+<!--    <br><br>-->
+<!--    <br><br>-->
+<!--  </div>-->
+<!--  <form class="message-form">-->
+<!--    {%csrf_token%}-->
+<!--    <div class="input-group">-->
+<!--      <input type="text" class="form-control message-input" placeholder="Type your message...">-->
+<!--      <div class="input-group-append">-->
+<!--        <button type="submit" class="btn btn-primary btn-send">Send</button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </form>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--  const messagesList = document.querySelector('.messages-list');-->
+<!--  const messageForm = document.querySelector('.message-form');-->
+<!--  const messageInput = document.querySelector('.message-input');-->
+
+<!--  messageForm.addEventListener('submit', (event) => {-->
+<!--    event.preventDefault();-->
+
+<!--    const message = messageInput.value.trim();-->
+<!--    if (message.length === 0) {-->
+<!--      return;-->
+<!--    }-->
+
+<!--    const messageItem = document.createElement('li');-->
+<!--    messageItem.classList.add('message', 'sent');-->
+<!--    messageItem.innerHTML = `-->
+<!--      <div class="message-text">-->
+<!--        <div class="message-sender">-->
+<!--          <b>You</b>-->
+<!--        </div>-->
+<!--        <div class="message-content">-->
+<!--          ${message}-->
+<!--        </div>-->
+<!--      </div>`;-->
+<!--    messagesList.appendChild(messageItem);-->
+
+<!--    messageInput.value = '';-->
+
+<!--    fetch('', {-->
+<!--      method: 'POST',-->
+<!--      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },-->
+<!--      body: new URLSearchParams({-->
+<!--        'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,-->
+<!--        'message': message-->
+<!--      })-->
+<!--    })-->
+<!--      .then(response => response.json())-->
+<!--      .then(data => {-->
+<!--        const response = data.response;-->
+<!--        const messageItem = document.createElement('li');-->
+<!--        messageItem.classList.add('message', 'received');-->
+<!--        messageItem.innerHTML = `-->
+<!--        <div class="message-text">-->
+<!--          <div class="message-sender">-->
+<!--            <b>AI Chatbot</b>-->
+<!--          <div>-->
+<!--          <div class="message-content">-->
+<!--            ${response}-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        `;-->
+<!--        messagesList.appendChild(messageItem);-->
+<!--      });-->
+<!--  });-->
+
+<!--</script>-->
+
+<!--{% endblock %}-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f4f4f9;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar {
+            background-color: #6a11cb;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            text-align: center;
+        }
+        .navbar-nav {
+            margin: 0 auto;
+        }
+        .navbar .navbar-brand {
+            font-size: 1.5rem;
+            color: #fff !important;
+        }
+        .navbar-nav .nav-link {
+            color: #fff !important;
+            padding: 0 15px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #ffd700;
+        }
+        .sidebar {
+            width: 350px;
+            background-color: #f8f9fa;
+            position: fixed;
+            top: 56px;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+        }
+        .subject-card {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .subject-card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .chat-window {
+            flex: 1;
+            margin-top: 56px;
+            margin-left: 350px;
+            margin-right: 0;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .input-bar {
+            position: fixed;
+            bottom: 0;
+            left: 350px;
+            width: calc(100% - 350px);
+            background-color: #fff;
+            padding: 10px 20px;
+            border-top: 1px solid #ddd;
+            z-index: 1000;
+        }
+        .input-bar .form-control {
+            border-radius: 25px;
+            height: 60px;
+            font-size: 1.2rem;
+            padding-right: 120px; /* Оставляем место для кнопок */
+        }
+        .input-bar .icon-button {
+            position: absolute;
+            right: 100px;
+            top: 10px;
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .input-bar .icon-button img {
+            width: 24px;
+            height: 24px;
+        }
+        .input-bar .btn-send {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            background-color: #6a11cb;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .input-bar .btn-send img {
+            width: 20px;
+            height: 20px;
+            filter: invert(1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка меню -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Survive Revenir</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#">Чат</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Личный кабинет</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Настройки</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Выход</a></li>
+                </ul>
             </div>
-            <div class="message-content">
-              Hi {{user.username}}, I am your AI Chatbot, you can ask me anything.
+        </div>
+    </nav>
+
+    <!-- Левое меню -->
+    <div class="sidebar">
+        <div class="subject-card">
+            <img src="https://via.placeholder.com/60" alt="Teacher">
+            <div>
+                <h6>Математика</h6>
+                <p class="text-muted mb-0">Последний вопрос: Что такое интеграл?</p>
             </div>
-          </div>
-        </li> -->
-
-
-        {% for chat in chats %}
-        {% if chat.user == request.user %}
-
-
-        <li class="message sent">
-          <div class="message-text">
-            <div class="message-sender">
-              <b>You</b>
+        </div>
+        <div class="subject-card">
+            <img src="https://via.placeholder.com/60" alt="Teacher">
+            <div>
+                <h6>Физика</h6>
+                <p class="text-muted mb-0">Последний вопрос: Объясни законы Ньютона.</p>
             </div>
-            <div class="message-content">
-              {{chat.message}}
+        </div>
+        <div class="subject-card">
+            <img src="https://via.placeholder.com/60" alt="Teacher">
+            <div>
+                <h6>Химия</h6>
+                <p class="text-muted mb-0">Какова структура молекулы воды?</p>
             </div>
-          </div>
-        </li>
-
-        <li class="message received">
-          <div class="message-text">
-            <div class="message-sender">
-              <b>AI Chatbot</b>
-            </div>
-            <div class="message-content">
-              {{chat.response}}
-            </div>
-          </div>
-        </li>
-
-        {% endif %}
-        {% endfor %}
-
-      </ul>
-
+        </div>
     </div>
-    <br><br>
-    <br><br>
-    <br><br>
-  </div>
-  <form class="message-form">
-    {%csrf_token%}
-    <div class="input-group">
-      <input type="text" class="form-control message-input" placeholder="Type your message...">
-      <div class="input-group-append">
-        <button type="submit" class="btn btn-primary btn-send">Send</button>
-      </div>
+
+    <!-- Окно взаимодействия с LLM -->
+    <div class="chat-window">
+        <div class="message-container">
+            <div class="mb-4">
+                <p class="bg-light p-3 rounded">Привет! Чем могу помочь?</p>
+            </div>
+            <div class="mb-4">
+                <p class="bg-primary text-white p-3 rounded">Расскажи про законы Ньютона</p>
+            </div>
+        </div>
     </div>
-  </form>
-</div>
 
-<script>
-  const messagesList = document.querySelector('.messages-list');
-  const messageForm = document.querySelector('.message-form');
-  const messageInput = document.querySelector('.message-input');
+    <!-- Окно ввода сообщений -->
+    <div class="input-bar">
+        <form>
+            <div class="position-relative">
+                <!-- Поле ввода сообщения -->
+                <input type="text" class="form-control" placeholder="Введите сообщение...">
+                <!-- Кнопка загрузки документа -->
+                <button class="icon-button" type="button" title="Загрузить документ">
+                    <img src="https://cdn-icons-png.flaticon.com/512/84/84154.png" alt="Attachment">
+                </button>
+                <!-- Кнопка загрузки аудио -->
+                <button class="icon-button" type="button" title="Загрузить аудио">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3059/3059493.png" alt="Microphone">
+                </button>
+                <!-- Кнопка отправки -->
+                <button class="btn-send" type="submit">
+                    <img src="https://cdn-icons-png.flaticon.com/512/709/709496.png" alt="Send">
+                </button>
+            </div>
+        </form>
+    </div>
 
-  messageForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const message = messageInput.value.trim();
-    if (message.length === 0) {
-      return;
-    }
-
-    const messageItem = document.createElement('li');
-    messageItem.classList.add('message', 'sent');
-    messageItem.innerHTML = `
-      <div class="message-text">
-        <div class="message-sender">
-          <b>You</b>
-        </div>
-        <div class="message-content">
-          ${message}
-        </div>
-      </div>`;
-    messagesList.appendChild(messageItem);
-
-    messageInput.value = '';
-
-    fetch('', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-        'message': message
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        const response = data.response;
-        const messageItem = document.createElement('li');
-        messageItem.classList.add('message', 'received');
-        messageItem.innerHTML = `
-        <div class="message-text">
-          <div class="message-sender">
-            <b>AI Chatbot</b>
-          <div>
-          <div class="message-content">
-            ${response}
-          </div>
-        </div>
-        `;
-        messagesList.appendChild(messageItem);
-      });
-  });
-
-</script>
-
-{% endblock %}
+    <!--
