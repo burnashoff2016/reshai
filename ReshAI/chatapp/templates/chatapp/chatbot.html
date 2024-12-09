@@ -191,77 +191,45 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // Функция для переключения между чатами
-    function switchChat(subject) {
-        const chats = document.querySelectorAll('.chat-container');
-        chats.forEach(chat => chat.classList.remove('active'));
-
-        // Переключаем чат в зависимости от выбранного предмета
-        if (subject === 'chat') {
-            document.getElementById('chat-container').classList.add('active');
-        } else if (subject === 'math') {
-            document.getElementById('chat-math').classList.add('active');
-        } else if (subject === 'physics') {
-            document.getElementById('chat-physics').classList.add('active');
-        } else if (subject === 'history') {
-            document.getElementById('chat-history').classList.add('active');
-        }
-    }
-
-    // Функция для отправки сообщения
-    function sendMessage() {
+    async function sendMessage() {
         const userInput = document.getElementById('user-input').value;
-        if (userInput.trim() !== '') {
-            const message = '<p><strong>Вы:</strong> ' + userInput + '</p>';
-            document.getElementById('chat-area').innerHTML += message;
-            document.getElementById('user-input').value = '';
+        if (userInput.trim() === '') {
+            alert('Введите сообщение!');
+            return;
+        }
+
+        // Отображение сообщения пользователя
+        const message = `<p><strong>Вы:</strong> ${userInput}</p>`;
+        document.getElementById('chat-area').innerHTML += message;
+
+        // Очистка поля ввода
+        document.getElementById('user-input').value = '';
+
+        try {
+            // Отправка POST-запроса на сервер
+            const response = await fetch('/chatapp/api/chat/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userInput }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const reply = `<p><strong>AI:</strong> ${data.reply}</p>`;
+                document.getElementById('chat-area').innerHTML += reply;
+            } else {
+                const errorData = await response.json();
+                alert(`Ошибка: ${errorData.error}`);
+            }
+        } catch (error) {
+            console.error('Ошибка сети:', error);
+            alert('Ошибка сети, попробуйте позже.');
         }
     }
-
-    // Функции для отправки сообщений для разных предметов
-    function sendMathMessage() {
-        const userInput = document.getElementById('math-input').value;
-        if (userInput.trim() !== '') {
-            const message = '<p><strong>Вы:</strong> ' + userInput + '</p>';
-            document.getElementById('chat-math-area').innerHTML += message;
-            document.getElementById('math-input').value = '';
-        }
-    }
-
-    function sendPhysicsMessage() {
-        const userInput = document.getElementById('physics-input').value;
-        if (userInput.trim() !== '') {
-            const message = '<p><strong>Вы:</strong> ' + userInput + '</p>';
-            document.getElementById('chat-physics-area').innerHTML += message;
-            document.getElementById('physics-input').value = '';
-        }
-    }
-
-    function sendHistoryMessage() {
-        const userInput = document.getElementById('history-input').value;
-        if (userInput.trim() !== '') {
-            const message = '<p><strong>Вы:</strong> ' + userInput + '</p>';
-            document.getElementById('chat-history-area').innerHTML += message;
-            document.getElementById('history-input').value = '';
-        }
-    }
-
-    // Логика загрузки файла
-    function uploadFile(event) {
-        const file = event.target.files[0];
-        if (file) {
-            alert('Файл загружен: ' + file.name);
-        }
-    }
-
-    // Логика записи аудио
-    function recordAudio() {
-        alert('Запись аудио...');
-    }
-
-    // Изначально отображаем основной чат
-    switchChat('chat');
 </script>
+
 
 </body>
 </html>
