@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,6 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-le$($#9#8^n2l*169u+p9!3fl@xd=)s2la%c%ms^9mgqkjrqxb')
+PERPLEXITY_API_KEY = config("PERPLEXITY_API_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
@@ -41,8 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
-    'testapp.apps.TestappConfig',
-    'testchat.apps.TestchatConfig',
+    'chatapp',
 ]
 
 MIDDLEWARE = [

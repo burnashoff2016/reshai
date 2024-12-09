@@ -1,235 +1,89 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReshAI Interface</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Chatbot</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
-            background-color: #f4f7fb;
             font-family: Arial, sans-serif;
+            margin: 20px;
         }
-
-        /* Шапка */
-        .navbar {
-            background-color: #005f99;
-            padding: 10px 20px;
-        }
-
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin-right: 20px;
-            font-size: 18px;
-        }
-
-        .navbar a:hover {
-            color: #ffcc00;
-        }
-
-        /* Боковое меню */
-        .sidebar {
-            background-color: #003366;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            color: white;
-            padding: 20px;
-            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .sidebar a {
-            color: white;
-            text-decoration: none;
-            display: block;
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-
-        .sidebar a:hover {
-            color: #ffcc00;
-        }
-
-        /* Основной контент */
-        .content {
-            margin-left: 270px;
-            padding: 20px;
-        }
-
-        .chat-container {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
+        #chat-area {
+            border: 1px solid #ccc;
+            padding: 10px;
             height: 400px;
             overflow-y: auto;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: none;
+            margin-bottom: 10px;
         }
-
-        .chat-container.active {
-            display: block;
+        #user-input {
+            width: calc(100% - 100px);
+            padding: 10px;
         }
-
-        /* Поле ввода */
-        .input-container {
-            display: flex;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .input-field {
-            width: 100%;
-            height: 120px;
-            padding: 15px;
-            border-radius: 20px;
-            border: 1px solid #ccc;
-            margin-right: 10px;
-            resize: none;
-            font-size: 16px;
-        }
-
-        .input-icons {
-            display: flex;
-            align-items: center;
-        }
-
-        .input-icons i {
-            margin-right: 15px;
-            font-size: 24px;
+        #send-btn {
+            width: 80px;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
             cursor: pointer;
         }
-
-        .file-input {
-            display: none;
+        #send-btn:hover {
+            background-color: #0056b3;
         }
-
     </style>
 </head>
 <body>
-
-<!-- Шапка -->
-<nav class="navbar navbar-expand-lg navbar-light">
-    <a class="navbar-brand" href="#">ReshAI</a>
-    <div class="ms-auto">
-        <a href="#" onclick="switchChat('chat')">Чат</a>
-        <a href="#">Личный кабинет</a>
-        <a href="#">Настройки</a>
-        <a href="#">Выход</a>
+    <h1>Chatbot</h1>
+    <div id="chat-area">
+        <!-- Здесь будут отображаться сообщения -->
     </div>
-</nav>
+    <input type="text" id="user-input" placeholder="Введите сообщение">
+    <button id="send-btn" onclick="sendMessage()">Отправить</button>
 
-<div class="d-flex">
-    <!-- Боковое меню -->
-    <div class="sidebar">
-        <h4>Предметы</h4>
-        <a href="#" onclick="switchChat('math')">Математика</a>
-        <a href="#" onclick="switchChat('physics')">Физика</a>
-        <a href="#" onclick="switchChat('history')">История</a>
-    </div>
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById('user-input').value;
 
-    <!-- Основной контент -->
-    <div class="content">
-        <div class="chat-container active" id="chat-container">
-            <div id="chat-area"></div>
-            <div class="input-container">
-                <textarea class="input-field" id="user-input" placeholder="Введите сообщение..."></textarea>
-                <div class="input-icons">
-                    <label for="file-upload" class="material-icons">attach_file</label>
-                    <input type="file" id="file-upload" class="file-input" onchange="uploadFile(event)">
-                    <i class="material-icons" onclick="recordAudio()">mic</i>
-                    <button class="btn btn-primary" onclick="sendMessage()">Отправить</button>
-                </div>
-            </div>
-        </div>
+            if (userInput.trim() !== '') {
+                // Отображение сообщения пользователя
+                const message = `<p><strong>Вы:</strong> ${userInput}</p>`;
+                document.getElementById('chat-area').innerHTML += message;
+                document.getElementById('user-input').value = '';
 
-        <!-- Чат для разных предметов -->
-        <div class="chat-container" id="chat-math">
-            <div id="chat-math-area"></div>
-            <div class="input-container">
-                <textarea class="input-field" id="math-input" placeholder="Введите сообщение..."></textarea>
-                <div class="input-icons">
-                    <label for="file-upload" class="material-icons">attach_file</label>
-                    <input type="file" id="file-upload-math" class="file-input" onchange="uploadFile(event)">
-                    <i class="material-icons" onclick="recordAudio()">mic</i>
-                    <button class="btn btn-primary" onclick="sendMathMessage()">Отправить</button>
-                </div>
-            </div>
-        </div>
+                // Прокручиваем вниз
+                document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
 
-        <div class="chat-container" id="chat-physics">
-            <div id="chat-physics-area"></div>
-            <div class="input-container">
-                <textarea class="input-field" id="physics-input" placeholder="Введите сообщение..."></textarea>
-                <div class="input-icons">
-                    <label for="file-upload" class="material-icons">attach_file</label>
-                    <input type="file" id="file-upload-physics" class="file-input" onchange="uploadFile(event)">
-                    <i class="material-icons" onclick="recordAudio()">mic</i>
-                    <button class="btn btn-primary" onclick="sendPhysicsMessage()">Отправить</button>
-                </div>
-            </div>
-        </div>
+                // Отправка запроса на сервер
+                fetch("{% url 'chat' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": '{{ csrf_token }}',
+                    },
+                    body: JSON.stringify({ message: userInput }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.reply) {
+                        const aiMessage = `<p><strong>AI:</strong> ${data.reply}</p>`;
+                        document.getElementById('chat-area').innerHTML += aiMessage;
+                    } else if (data.error) {
+                        const errorMessage = `<p><strong>Ошибка:</strong> ${data.error}</p>`;
+                        document.getElementById('chat-area').innerHTML += errorMessage;
+                    }
 
-        <div class="chat-container" id="chat-history">
-            <div id="chat-history-area"></div>
-            <div class="input-container">
-                <textarea class="input-field" id="history-input" placeholder="Введите сообщение..."></textarea>
-                <div class="input-icons">
-                    <label for="file-upload" class="material-icons">attach_file</label>
-                    <input type="file" id="file-upload-history" class="file-input" onchange="uploadFile(event)">
-                    <i class="material-icons" onclick="recordAudio()">mic</i>
-                    <button class="btn btn-primary" onclick="sendHistoryMessage()">Отправить</button>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    async function sendMessage() {
-        const userInput = document.getElementById('user-input').value;
-        if (userInput.trim() === '') {
-            alert('Введите сообщение!');
-            return;
-        }
-
-        // Отображение сообщения пользователя
-        const message = `<p><strong>Вы:</strong> ${userInput}</p>`;
-        document.getElementById('chat-area').innerHTML += message;
-
-        // Очистка поля ввода
-        document.getElementById('user-input').value = '';
-
-        try {
-            // Отправка POST-запроса на сервер
-            const response = await fetch('/chatapp/api/chat/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ message: userInput }),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                const reply = `<p><strong>AI:</strong> ${data.reply}</p>`;
-                document.getElementById('chat-area').innerHTML += reply;
-            } else {
-                const errorData = await response.json();
-                alert(`Ошибка: ${errorData.error}`);
+                    // Прокрутка вниз
+                    document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
+                })
+                .catch(error => {
+                    console.error("Ошибка:", error);
+                    const errorMessage = `<p><strong>Ошибка:</strong> Не удалось связаться с сервером.</p>`;
+                    document.getElementById('chat-area').innerHTML += errorMessage;
+                });
             }
-        } catch (error) {
-            console.error('Ошибка сети:', error);
-            alert('Ошибка сети, попробуйте позже.');
         }
-    }
-</script>
-
-
+    </script>
 </body>
 </html>
