@@ -1,148 +1,267 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReshAI</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>ReshAI Interface</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         body {
-            background-color: #f5faff; /* Синий фон */
-            color: #333; /* Тёмный текст */
+            background-color: #f4f7fb;
             font-family: Arial, sans-serif;
         }
 
+        /* Шапка */
+        .navbar {
+            background-color: #005f99;
+            padding: 10px 20px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 18px;
+        }
+
+        .navbar a:hover {
+            color: #ffcc00;
+        }
+
+        /* Боковое меню */
         .sidebar {
-            background-color: #e7f0ff; /* Светло-синий */
+            background-color: #003366;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            color: white;
             padding: 20px;
-            border-right: 2px solid #cfddee; /* Разделительная линия */
+            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .subject {
-            padding: 10px;
-            margin: 10px 0;
-            background-color: #d1e9ff; /* Яркий синий */
-            border-radius: 5px;
-            cursor: pointer;
-            text-align: center;
-            font-weight: bold;
-            color: #003f7f;
-            transition: background-color 0.3s;
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
         }
 
-        .subject:hover {
-            background-color: #a8d1ff; /* Более яркий при наведении */
+        .sidebar a:hover {
+            color: #ffcc00;
+        }
+
+        /* Основной контент */
+        .content {
+            margin-left: 270px;
+            padding: 20px;
         }
 
         .chat-container {
-            background-color: #ffffff;
+            background-color: white;
+            border-radius: 10px;
             padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            height: 400px;
+            overflow-y: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
         }
 
-        textarea {
+        .chat-container.active {
+            display: block;
+        }
+
+        /* Поле ввода */
+        .input-container {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .input-field {
             width: 100%;
-            height: 100px;
-            margin-top: 10px;
-            border: 1px solid #cfddee;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 14px;
+            height: 120px;
+            padding: 15px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+            resize: none;
+            font-size: 16px;
         }
 
-        button {
-            margin-top: 10px;
-            background-color: #0066cc;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
+        .input-icons {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icons i {
+            margin-right: 15px;
+            font-size: 24px;
             cursor: pointer;
-            font-size: 14px;
         }
 
-        button:hover {
-            background-color: #004d99;
+        .file-input {
+            display: none;
         }
+
     </style>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-3 sidebar">
-                <h4>Предметы</h4>
-                <div class="subject" data-content="math-content">Математика</div>
-                <div class="subject" data-content="physics-content">Физика</div>
-                <div class="subject" data-content="history-content">История</div>
-            </div>
 
-            <!-- Main content -->
-            <div class="col-md-9">
-                <header class="text-center mb-4">
-                    <h1>ReshAI</h1>
-                </header>
-                <div id="main-content" class="content">
-                    <!-- Контент для предметов -->
-                    <div id="math-content" class="chat-container d-none">
-                        <p>Контент для математики</p>
-                        <textarea placeholder="Введите сообщение..."></textarea>
-                        <button>Отправить</button>
-                    </div>
-                    <div id="physics-content" class="chat-container d-none">
-                        <p>Контент для физики</p>
-                        <textarea placeholder="Введите сообщение..."></textarea>
-                        <button>Отправить</button>
-                    </div>
-                    <div id="history-content" class="chat-container d-none">
-                        <p>Контент для истории</p>
-                        <textarea placeholder="Введите сообщение..."></textarea>
-                        <button>Отправить</button>
-                    </div>
+<!-- Шапка -->
+<nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="#">ReshAI</a>
+    <div class="ms-auto">
+        <a href="#" onclick="switchChat('chat')">Чат</a>
+        <a href="#">Личный кабинет</a>
+        <a href="#">Настройки</a>
+        <a href="#">Выход</a>
+    </div>
+</nav>
+
+<div class="d-flex">
+    <!-- Боковое меню -->
+    <div class="sidebar">
+        <h4>Предметы</h4>
+        <a href="#" onclick="switchChat('math')">Математика</a>
+        <a href="#" onclick="switchChat('physics')">Физика</a>
+        <a href="#" onclick="switchChat('history')">История</a>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="content">
+        <div class="chat-container active" id="chat-container">
+            <div id="chat-area"></div>
+            <div class="input-container">
+                <textarea class="input-field" id="user-input" placeholder="Введите сообщение..."></textarea>
+                <div class="input-icons">
+                    <label for="file-upload" class="material-icons">attach_file</label>
+                    <input type="file" id="file-upload" class="file-input" onchange="uploadFile(event)">
+                    <i class="material-icons" onclick="recordAudio()">mic</i>
+                    <button class="btn btn-primary" onclick="sendMessage()">Отправить</button>
                 </div>
             </div>
         </div>
+
+        <!-- Чат для разных предметов -->
+        <div class="chat-container" id="chat-math">
+            <div id="chat-math-area"></div>
+            <div class="input-container">
+                <textarea class="input-field" id="math-input" placeholder="Введите сообщение..."></textarea>
+                <div class="input-icons">
+                    <label for="file-upload" class="material-icons">attach_file</label>
+                    <input type="file" id="file-upload-math" class="file-input" onchange="uploadFile(event)">
+                    <i class="material-icons" onclick="recordAudio()">mic</i>
+                    <button class="btn btn-primary" onclick="sendMathMessage()">Отправить</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-container" id="chat-physics">
+            <div id="chat-physics-area"></div>
+            <div class="input-container">
+                <textarea class="input-field" id="physics-input" placeholder="Введите сообщение..."></textarea>
+                <div class="input-icons">
+                    <label for="file-upload" class="material-icons">attach_file</label>
+                    <input type="file" id="file-upload-physics" class="file-input" onchange="uploadFile(event)">
+                    <i class="material-icons" onclick="recordAudio()">mic</i>
+                    <button class="btn btn-primary" onclick="sendPhysicsMessage()">Отправить</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-container" id="chat-history">
+            <div id="chat-history-area"></div>
+            <div class="input-container">
+                <textarea class="input-field" id="history-input" placeholder="Введите сообщение..."></textarea>
+                <div class="input-icons">
+                    <label for="file-upload" class="material-icons">attach_file</label>
+                    <input type="file" id="file-upload-history" class="file-input" onchange="uploadFile(event)">
+                    <i class="material-icons" onclick="recordAudio()">mic</i>
+                    <button class="btn btn-primary" onclick="sendHistoryMessage()">Отправить</button>
+                </div>
+            </div>
+        </div>
+
     </div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const subjects = document.querySelectorAll('.subject'); // Находим все предметы
-            const contentContainers = document.querySelectorAll('.chat-container'); // Находим все контейнеры контента
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Функция для переключения между чатами
+    function switchChat(subject) {
+        const chats = document.querySelectorAll('.chat-container');
+        chats.forEach(chat => chat.classList.remove('active'));
 
-            subjects.forEach(subject => {
-                subject.addEventListener('click', () => {
-                    const targetId = subject.getAttribute('data-content'); // Получаем id целевого контента
+        // Переключаем чат в зависимости от выбранного предмета
+        if (subject === 'chat') {
+            document.getElementById('chat-container').classList.add('active');
+        } else if (subject === 'math') {
+            document.getElementById('chat-math').classList.add('active');
+        } else if (subject === 'physics') {
+            document.getElementById('chat-physics').classList.add('active');
+        } else if (subject === 'history') {
+            document.getElementById('chat-history').classList.add('active');
+        }
+    }
 
-                    // Скрываем все контейнеры
-                    contentContainers.forEach(container => {
-                        container.classList.add('d-none');
-                    });
+    // Функция для отправки сообщения
+    function sendMessage() {
+        const userInput = document.getElementById('user-input').value;
+        if (userInput.trim() !== '') {
+            const message = '<p><strong>Вы:</strong> ' + userInput + '</p>';
+            document.getElementById('chat-area').innerHTML += message;
+            document.getElementById('user-input').value = '';
+        }
+    }
 
-                    // Показываем выбранный контейнер
-                    const targetContent = document.getElementById(targetId);
-                    if (targetContent) {
-                        targetContent.classList.remove('d-none');
-                    } else {
-                        console.error(`Контейнер с id "${targetId}" не найден.`);
-                    }
-                });
-            });
-        });
-    </script>
+    // Функции для отправки сообщений для разных предметов
+    function sendMathMessage() {
+        const userInput = document.getElementById('math-input').value;
+        if (userInput.trim() !== '') {
+            const message = '<p><strong>Вы:</strong> ' + userInput + '</p>';
+            document.getElementById('chat-math-area').innerHTML += message;
+            document.getElementById('math-input').value = '';
+        }
+    }
+
+    function sendPhysicsMessage() {
+        const userInput = document.getElementById('physics-input').value;
+        if (userInput.trim() !== '') {
+            const message = '<p><strong>Вы:</strong> ' + userInput + '</p>';
+            document.getElementById('chat-physics-area').innerHTML += message;
+            document.getElementById('physics-input').value = '';
+        }
+    }
+
+    function sendHistoryMessage() {
+        const userInput = document.getElementById('history-input').value;
+        if (userInput.trim() !== '') {
+            const message = '<p><strong>Вы:</strong> ' + userInput + '</p>';
+            document.getElementById('chat-history-area').innerHTML += message;
+            document.getElementById('history-input').value = '';
+        }
+    }
+
+    // Логика загрузки файла
+    function uploadFile(event) {
+        const file = event.target.files[0];
+        if (file) {
+            alert('Файл загружен: ' + file.name);
+        }
+    }
+
+    // Логика записи аудио
+    function recordAudio() {
+        alert('Запись аудио...');
+    }
+
+    // Изначально отображаем основной чат
+    switchChat('chat');
+</script>
+
 </body>
 </html>
-
-
-
-<!--<img src="https://cdn-icons-png.flaticon.com/512/3914/3914166.png" alt="Upload Document" class="icon" style="width: 30px;">-->
-<!--                    </label>-->
-<!--                    <input type="file" id="upload-document">-->
-<!--                    <label for="upload-audio">-->
-<!--                        <img src="https://cdn-icons-png.flaticon.com/512/3914/3914253.png" alt="Upload Audio" class="icon" style="width: 30px;">-->
-<!--                    </label>-->
-<!--                    <input type="file" id="upload-audio">-->
-<!--                </div>-->
-<!--                <button class="btn btn-primary">-->
-<!--                    <img src="https://cdn-icons-png.flaticon.com/512/9821/9821608.png" alt="Send" style="width: 20px;">-->
