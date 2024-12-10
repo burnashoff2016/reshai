@@ -5,11 +5,8 @@ function selectSubject(subject) {
     const chatBox = document.getElementById("chat-box");
     chatBox.innerHTML = `<div class="system-message">Вы выбрали предмет: ${subject}</div>`;
 
-    // Подсветка выбранного предмета
     const allSubjects = document.querySelectorAll('.subjects-menu ul li');
-    allSubjects.forEach(li => {
-        li.classList.remove('selected');
-    });
+    allSubjects.forEach(li => li.classList.remove('selected'));
     const selectedLi = document.querySelector(`#subject-${subject.toLowerCase()}`);
     if (selectedLi) {
         selectedLi.classList.add('selected');
@@ -29,6 +26,11 @@ function sendMessage() {
         return;
     }
 
+    const chatBox = document.getElementById("chat-box");
+    chatBox.innerHTML += `<div class="chat-message user"><strong>Вы:</strong> ${message}</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+    document.getElementById("user-message").value = "";
+
     fetch("/chat/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -36,14 +38,49 @@ function sendMessage() {
     })
     .then(response => response.json())
     .then(data => {
-        const chatBox = document.getElementById("chat-box");
-        chatBox.innerHTML += `<div><strong>Вы:</strong> ${message}</div>`;
-        chatBox.innerHTML += `<div><strong>Бот:</strong> ${data.reply}</div>`;
-        chatBox.scrollTop = chatBox.scrollHeight; // Прокрутка вниз
-        document.getElementById("user-message").value = "";
+        const botMessageDiv = document.createElement('div');
+        botMessageDiv.className = "chat-message bot";
+        chatBox.appendChild(botMessageDiv);
+        animateTypingWithCleanText(botMessageDiv, data.reply);
     })
     .catch(error => {
         console.error("Ошибка:", error);
         alert("Произошла ошибка при отправке сообщения.");
     });
+}
+
+function animateTypingWithCleanText(element, text) {
+    // Очищаем текст: удаляем ### и лишние переносы строк
+    const cleanedText = text.replace(/###|\r|\n/g, '\n').trim();
+    const paragraphs = cleanedText.split(/\n{2,}/).map(part => part.trim()).filter(part => part.length > 0);
+
+    let currentParagraphIndex = 0;
+    let currentTextIndex = 0;
+    let currentParagraph = document.createElement('p');
+    element.appendChild(currentParagraph);
+
+    const interval = 25; // Скорость печати (в миллисекундах)
+
+    function typeNextChar() {
+        if (currentParagraphIndex < paragraphs.length) {
+            const paragraphText = paragraphs[currentParagraphIndex];
+
+            if (currentTextIndex < paragraphText.length) {
+                currentParagraph.innerHTML += paragraphText[currentTextIndex++];
+            } else {
+                currentParagraphIndex++;
+                currentTextIndex = 0;
+
+                if (currentParagraphIndex < paragraphs.length) {
+                    currentParagraph = document.createElement('p');
+                    element.appendChild(currentParagraph);
+                }
+            }
+
+            element.scrollTop = element.scrollHeight; // Прокрутка вниз
+            setTimeout(typeNextChar, interval);
+        }
+    }
+
+    typeNextChar();
 }
