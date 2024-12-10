@@ -3,87 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        #chat-area {
-            border: 1px solid #ccc;
-            padding: 10px;
-            height: 400px;
-            overflow-y: auto;
-            margin-bottom: 10px;
-        }
-        #user-input {
-            width: calc(100% - 100px);
-            padding: 10px;
-        }
-        #send-btn {
-            width: 80px;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        #send-btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>ReshAI</title>
 </head>
 <body>
-    <h1>Chatbot</h1>
-    <div id="chat-area">
-        <!-- Здесь будут отображаться сообщения -->
-    </div>
-    <input type="text" id="user-input" placeholder="Введите сообщение">
-    <button id="send-btn" onclick="sendMessage()">Отправить</button>
+    <!-- Верхнее меню -->
+    <header class="top-nav">
+        <div class="logo">ReshAI</div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Чат</a></li>
+                <li><a href="#">Личный кабинет</a></li>
+                <li><a href="#">Настройки</a></li>
+                <li><a href="#">Выход</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <script>
-        function sendMessage() {
-            const userInput = document.getElementById('user-input').value;
+    <!-- Основной контент -->
+    <main>
+        <!-- Левое меню выбора предметов -->
+        <aside class="subjects-menu">
+            <h3>Выберите предмет</h3>
+            <ul>
+                <li onclick="selectSubject('Математика')" id="subject-math">Математика</li>
+                <li onclick="selectSubject('Физика')" id="subject-phy">Физика</li>
+                <li onclick="selectSubject('История')" id="subject-history">История</li>
+                <li onclick="selectSubject('Химия')" id="subject-chemistry">Химия</li>
+                <li onclick="selectSubject('Биология')" id="subject-biology">Биология</li>
+            </ul>
+        </aside>
 
-            if (userInput.trim() !== '') {
-                // Отображение сообщения пользователя
-                const message = `<p><strong>Вы:</strong> ${userInput}</p>`;
-                document.getElementById('chat-area').innerHTML += message;
-                document.getElementById('user-input').value = '';
-
-                // Прокручиваем вниз
-                document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
-
-                // Отправка запроса на сервер
-                fetch("{% url 'chat' %}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": '{{ csrf_token }}',
-                    },
-                    body: JSON.stringify({ message: userInput }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.reply) {
-                        const aiMessage = `<p><strong>AI:</strong> ${data.reply}</p>`;
-                        document.getElementById('chat-area').innerHTML += aiMessage;
-                    } else if (data.error) {
-                        const errorMessage = `<p><strong>Ошибка:</strong> ${data.error}</p>`;
-                        document.getElementById('chat-area').innerHTML += errorMessage;
-                    }
-
-                    // Прокрутка вниз
-                    document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
-                })
-                .catch(error => {
-                    console.error("Ошибка:", error);
-                    const errorMessage = `<p><strong>Ошибка:</strong> Не удалось связаться с сервером.</p>`;
-                    document.getElementById('chat-area').innerHTML += errorMessage;
-                });
-            }
-        }
-    </script>
+        <!-- Окно чата -->
+        <section class="chat-container">
+            <div id="chat-box" class="chat-box">
+                <div class="system-message">Выберите предмет, чтобы начать чат.</div>
+            </div>
+            <div class="chat-input-container">
+                <textarea id="user-message" placeholder="Введите ваше сообщение..."></textarea>
+                <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </section>
+    </main>
+    <script src="{% static 'js/app.js' %}"></script>
 </body>
 </html>
