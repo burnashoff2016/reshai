@@ -1,39 +1,50 @@
+from turtledemo.clock import datum
+
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 import requests
 import json
+import json5
 import os
 
 # Ваш API-ключ Perplexity
-PERPLEXITY_API_KEY = "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"
+
 
 # Функция для загрузки шаблонов промтов
+# def load_prompts():
+#     prompts = {}
+#     base_dir = os.path.join(os.path.dirname(__file__), "..", "prompts")
+#     subjects = {
+#         "Математика": "matematika.txt",
+#         "Физика": "fizika.txt",
+#         "История": "istoriya.txt",
+#         "Химия": "khimiya.txt",
+#         "Биология": "biologiya.txt",
+#     }
+#     for subject, filename in subjects.items():
+#         filepath = os.path.join(base_dir, filename)
+#         try:
+#             with open(filepath, "r", encoding="utf-8") as file:
+#                 prompts[subject] = file.read().strip()
+#         except FileNotFoundError:
+#             print(f"Файл {filename} не найден.")
+#             prompts[subject] = f"Шаблон для {subject} отсутствует."
+#     return prompts
+
 def load_prompts():
+    data = json5.load(open('configs/prompts.json5', encoding='utf-8'))
     prompts = {}
-    base_dir = os.path.join(os.path.dirname(__file__), "..", "prompts")
-    subjects = {
-        "Математика": "matematika.txt",
-        "Физика": "fizika.txt",
-        "История": "istoriya.txt",
-        "Химия": "khimiya.txt",
-        "Биология": "biologiya.txt",
-    }
-    for subject, filename in subjects.items():
-        filepath = os.path.join(base_dir, filename)
-        try:
-            with open(filepath, "r", encoding="utf-8") as file:
-                prompts[subject] = file.read().strip()
-        except FileNotFoundError:
-            print(f"Файл {filename} не найден.")
-            prompts[subject] = f"Шаблон для {subject} отсутствует."
+    for k, v in data.items():
+        prompts[k] = "\n".join(v) if isinstance(v, list) else v
     return prompts
+
 
 # Функция для отправки запроса к Perplexity API
 def get_perplexity_response(question):
     api_url = "https://api.perplexity.ai/chat/completions"
     headers = {
-        "Authorization": f"Bearer {PERPLEXITY_API_KEY}",
+        "Authorization": f"Bearer {os.getenv("PERPLEXITY_API_KEY", "")}",
         "Content-Type": "application/json",
     }
     payload = {
@@ -47,7 +58,7 @@ def get_perplexity_response(question):
         "presence_penalty": 0,
         "frequency_penalty": 1
     }
-
+    # print(payload)
     try:
         response = requests.post(api_url, headers=headers, json=payload)
         response.raise_for_status()

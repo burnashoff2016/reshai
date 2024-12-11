@@ -7,47 +7,81 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>ReshAI</title>
+    <style>
+        body {
+         
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn-custom {
+            background-color: #6a11cb;
+            color: #fff;
+            border: none;
+        }
+        .btn-custom:hover {
+            background-color: #2575fc;
+        }
+        
+    </style>
 </head>
 <body>
-    <!-- Верхнее меню -->
-    <header class="top-nav">
-        <div class="logo">ReshAI</div>
+<!-- Верхнее меню -->
+<header class="top-nav">
+    <div class="logo">ReshAI</div>
+    {% if user.is_authenticated %}
         <nav>
             <ul>
-                <li><a href="#" class="active">Чат</a></li>
+                <li><a href='{% url "chatbot" %}' class="active">Чат</a></li>
                 <li><a href="#">Личный кабинет</a></li>
                 <li><a href="#">Настройки</a></li>
-                <li><a href="#">Выход</a></li>
+                <li>
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-custom btn-lg">Выход</button>
+                    </form>
+                </li>
             </ul>
         </nav>
-    </header>
-
-    <!-- Основной контент -->
-    <main>
-        <!-- Левое меню выбора предметов -->
-        <aside class="subjects-menu">
-            <h3>Выберите предмет</h3>
+    {% else %}
+        <nav>
             <ul>
-                <li onclick="selectSubject('Математика')" id="subject-math">Математика</li>
-                <li onclick="selectSubject('Физика')" id="subject-phy">Физика</li>
-                <li onclick="selectSubject('История')" id="subject-history">История</li>
-                <li onclick="selectSubject('Химия')" id="subject-chemistry">Химия</li>
-                <li onclick="selectSubject('Биология')" id="subject-biology">Биология</li>
+                <li><a href='{% url "chatbot" %}' class="active">Чат</a></li>
+                <li><a href='{% url "login" %}'>Вход</a></li>
+                <li><a href='{% url "signup" %}'>Регистрация</a></li>
             </ul>
-        </aside>
+        </nav>
+    {% endif %}
+</header>
+
+<!-- Основной контент -->
+<main>
+    <!-- Левое меню выбора предметов -->
+    <aside class="subjects-menu">
+        <h3>Выберите предмет</h3>
+        <ul>
+            <li onclick="selectSubject('Математика')" id="subject-math">Математика</li>
+            <li onclick="selectSubject('Физика')" id="subject-phy">Физика</li>
+            <li onclick="selectSubject('История')" id="subject-history">История</li>
+            <li onclick="selectSubject('Химия')" id="subject-chemistry">Химия</li>
+            <li onclick="selectSubject('Биология')" id="subject-biology">Биология</li>
+        </ul>
+    </aside>
 
 
-      <!-- Окно чата -->
-<section class="chat-container">
-    <div id="chat-box" class="chat-box">
-        <div class="system-message">Выберите предмет, чтобы начать чат.</div>
-    </div>
-    <div class="chat-input-container">
-        <textarea id="user-message" placeholder="Введите ваше сообщение..."></textarea>
-        <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
-    </div>
-</section>
-    </main>
-    <script src="{% static 'js/app.js' %}"></script>
+    <!-- Окно чата -->
+    <section class="chat-container">
+        <div id="chat-box" class="chat-box">
+            <div class="system-message">Выберите предмет, чтобы начать чат.</div>
+        </div>
+        <div class="chat-input-container">
+            <textarea id="user-message" placeholder="Введите ваше сообщение..."></textarea>
+            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </section>
+</main>
+<script src="{% static 'js/app.js' %}"></script>
 </body>
 </html>
