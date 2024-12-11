@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "test.misterstalker.site",
+    "app.resh-ai.ru"
 ]
 
 # Application definition
