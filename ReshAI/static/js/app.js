@@ -84,3 +84,4 @@ function animateTypingWithCleanText(element, text) {
 
     typeNextChar();
 }
+console.log('app.js loaded');

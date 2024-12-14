@@ -1,4 +1,4 @@
-from turtledemo.clock import datum
+
 
 from django.http import JsonResponse
 from django.shortcuts import render
