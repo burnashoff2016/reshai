@@ -5,27 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/favicon-96x96.png' %}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}" />
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}" />
+    <meta name="apple-mobile-web-app-title" content="ReshAI" />
+    <link rel="manifest" href="{% static 'images/site.webmanifest' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>ReshAI</title>
-    <style>
-        body {
-         
-        }
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        .btn-custom {
-            background-color: #6a11cb;
-            color: #fff;
-            border: none;
-        }
-        .btn-custom:hover {
-            background-color: #2575fc;
-        }
-        
-    </style>
 </head>
 <body>
 <!-- Верхнее меню -->
@@ -70,7 +57,6 @@
         </ul>
     </aside>
 
-
     <!-- Окно чата -->
     <section class="chat-container">
         <div id="chat-box" class="chat-box">
@@ -81,7 +67,20 @@
             <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
         </div>
     </section>
+
+    <!-- Загрузка документов -->
+    <section class="upload-section">
+        <div class="resize-handle"></div> <!-- Добавляем зону для перетаскивания -->
+        <form id="upload-form" enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            <label for="document" class="upload-label">Загрузите документ:</label>
+            <input type="file" name="document" id="document" accept=".docx" class="file-input">
+            <button type="submit" class="upload-button">Загрузить</button>
+        </form>
+        <div id="document-text"></div>
+    </section>
 </main>
-<script src="{% static 'js/app.js' %}"></script>
+
+<script src="{% static 'js/app.js' %}" defer></script>
 </body>
 </html>

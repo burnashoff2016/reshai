@@ -1,50 +1,36 @@
-
-
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 import requests
 import json
 import json5
 import os
+import docx
 
-# Ваш API-ключ Perplexity
+# Получение API-ключа из переменных окружения
+PERPLEXITY_API_KEY = os.getenv("PERPLEXITY_API_KEY", "")
 
 
 # Функция для загрузки шаблонов промтов
-# def load_prompts():
-#     prompts = {}
-#     base_dir = os.path.join(os.path.dirname(__file__), "..", "prompts")
-#     subjects = {
-#         "Математика": "matematika.txt",
-#         "Физика": "fizika.txt",
-#         "История": "istoriya.txt",
-#         "Химия": "khimiya.txt",
-#         "Биология": "biologiya.txt",
-#     }
-#     for subject, filename in subjects.items():
-#         filepath = os.path.join(base_dir, filename)
-#         try:
-#             with open(filepath, "r", encoding="utf-8") as file:
-#                 prompts[subject] = file.read().strip()
-#         except FileNotFoundError:
-#             print(f"Файл {filename} не найден.")
-#             prompts[subject] = f"Шаблон для {subject} отсутствует."
-#     return prompts
-
 def load_prompts():
-    data = json5.load(open('configs/prompts.json5', encoding='utf-8'))
-    prompts = {}
-    for k, v in data.items():
-        prompts[k] = "\n".join(v) if isinstance(v, list) else v
-    return prompts
+    try:
+        data = json5.load(open('configs/prompts.json5', encoding='utf-8'))
+        prompts = {}
+        for k, v in data.items():
+            prompts[k] = "\n".join(v) if isinstance(v, list) else v
+        return prompts
+    except Exception as e:
+        print(f"Ошибка при загрузке шаблонов: {e}")
+        return {}
 
 
 # Функция для отправки запроса к Perplexity API
 def get_perplexity_response(question):
     api_url = "https://api.perplexity.ai/chat/completions"
     headers = {
-        "Authorization": f"Bearer {os.getenv("PERPLEXITY_API_KEY", "")}",
+        "Authorization": f"Bearer {PERPLEXITY_API_KEY}",
         "Content-Type": "application/json",
     }
     payload = {
@@ -58,7 +44,7 @@ def get_perplexity_response(question):
         "presence_penalty": 0,
         "frequency_penalty": 1
     }
-    # print(payload)
+
     try:
         response = requests.post(api_url, headers=headers, json=payload)
         response.raise_for_status()
@@ -69,9 +55,34 @@ def get_perplexity_response(question):
         print(f"Ошибка при запросе к Perplexity API: {e}")
         return "Произошла ошибка при обращении к API Perplexity."
 
+
+# Функция для извлечения текста из Word-документа
+def extract_text_from_docx(file_path):
+    try:
+        doc = docx.Document(file_path)
+        return "\n".join([paragraph.text for paragraph in doc.paragraphs if paragraph.text.strip()])
+    except Exception as e:
+        print(f"Ошибка при обработке документа: {e}")
+        return "Ошибка при обработке документа."
+
+
 @csrf_exempt
 def chatbot_view(request):
     if request.method == "POST":
+        if request.FILES.get('document'):  # Если загружен файл
+            uploaded_file = request.FILES['document']
+            file_path = default_storage.save(uploaded_file.name, ContentFile(uploaded_file.read()))
+            full_path = default_storage.path(file_path)
+
+            # Извлечение текста из документа
+            extracted_text = extract_text_from_docx(full_path)
+
+            # Сохраняем текст в сессии
+            request.session['extracted_text'] = extracted_text
+
+            return JsonResponse({'message': 'Документ успешно обработан', 'extracted_text': extracted_text}, status=200)
+
+        # Обработка сообщений от пользователя
         try:
             data = json.loads(request.body)
             user_message = data.get('message', '')
@@ -80,13 +91,20 @@ def chatbot_view(request):
             if not user_message or not subject:
                 return JsonResponse({'error': 'Пустое сообщение или не выбран предмет'}, status=400)
 
-            # Загрузка промтов из файлов
+            # Загрузка шаблонов промтов
             prompt_templates = load_prompts()
 
-            # Добавляем контекст предмета в запрос
-            template = prompt_templates.get(subject, "{question}")
-            question = template.format(question=user_message)
+            # Получаем ранее извлечённый текст из сессии
+            extracted_text = request.session.get('extracted_text', '')
 
+            if not extracted_text:
+                return JsonResponse({'error': 'Документ не был загружен или обработан'}, status=400)
+
+            # Формирование запроса с учётом выбранного предмета
+            template = prompt_templates.get(subject, "{question}")
+            question = template.format(question=user_message, document=extracted_text)
+
+            # Получение ответа от Perplexity API
             bot_response = get_perplexity_response(question)
             return JsonResponse({'reply': bot_response}, status=200)
         except json.JSONDecodeError:
