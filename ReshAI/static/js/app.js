@@ -1,4 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const menuToggle = document.getElementById("menu-toggle");
+    const sidebarMenu = document.getElementById("sidebar-menu");
+
+    // Обработчик клика по кнопке меню
+    menuToggle.addEventListener("click", function() {
+        sidebarMenu.classList.toggle("open"); // Переключаем класс для открытия/закрытия меню
+    });
+    
      window.selectSubject = selectSubject;
      window.sendMessage = sendMessage;
      window.scrollToBottom = scrollToBottom;
@@ -60,6 +68,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+
+
         const chatBox = document.getElementById("chat-box");
 
         /// Отправляем сообщение пользователя в чат
@@ -79,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
         chatBox.scrollTop = chatBox.scrollHeight;
         scrollToBottom();
 
-        fetch("/chat/", {
+        fetch("/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ subject: selectedSubject, message }),
@@ -133,6 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 element.scrollTop = element.scrollHeight;
                 setTimeout(typeNextChar, interval);
+                scrollToBottom();
             }
         }
 
@@ -174,4 +185,21 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     console.log('app.js loaded');
+});
+
+// Добавляем обработчик события на поле ввода
+document.addEventListener('DOMContentLoaded', () => {
+    const inputField = document.getElementById('user-message');
+
+    if (inputField) {
+        inputField.addEventListener('keydown', function (event) {
+            // Проверяем, что нажата клавиша Enter и не удерживается Shift
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault(); // Предотвращаем добавление новой строки
+                sendMessage(); // Вызываем функцию отправки сообщения
+            }
+        });
+    } else {
+        console.error("Элемент с id 'user-message' не найден.");
+    }
 });

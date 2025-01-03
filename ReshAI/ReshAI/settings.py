@@ -144,6 +144,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Default primary key field type
@@ -154,4 +156,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/chat/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # send emails to console
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10 MB
+
 

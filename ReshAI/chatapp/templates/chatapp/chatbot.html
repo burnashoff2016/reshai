@@ -17,6 +17,7 @@
 <body>
 <!-- Верхнее меню -->
 <header class="top-nav">
+    <button class="menu-toggle" id="menu-toggle">☰</button>
     <div class="logo">ReshAI</div>
     {% if user.is_authenticated %}
         <nav>
@@ -45,6 +46,15 @@
 
 <!-- Основной контент -->
 <main>
+     <aside class="sidebar-menu" id="sidebar-menu">
+    <nav>
+        <ul>
+            <li><a href="/" class="active">Файлы</a></li>
+            <li><a href="/page_one">Медиа</a></li>
+            <li><a href="/page_two">Чат</a></li>
+        </ul>
+    </nav>
+</aside>
     <!-- Левое меню выбора предметов -->
     <aside class="subjects-menu">
         <h3>Выберите предмет</h3>

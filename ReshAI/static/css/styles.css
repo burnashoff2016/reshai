@@ -34,6 +34,7 @@ body {
     font-weight: 700;
     margin-right: auto; /* Выровнять логотип в левый угол */
     font-family: 'Roboto', sans-serif;
+    letter-spacing: 2px; /* Увеличим межбуквенный интервал для улучшения читаемости */
 }
 
 .top-nav nav {
@@ -59,12 +60,13 @@ body {
 .top-nav nav ul li a {
     text-decoration: none;
     color: #ffffff;
-    font-weight: 500;
+    font-weight: 700;
     font-family: 'Roboto', sans-serif;
-    font-size: 1.1em;
-    padding: 5px 15px;
-    border-radius: 5px;
+    font-size: 1.2em;
+    padding: 10px 20px;
+    border-radius: 8px;
     transition: color 0.3s ease, transform 0.3s ease;
+    letter-spacing: 1px; /* Увеличиваем межбуквенный интервал */
 }
 
 .top-nav nav ul li a:hover,
@@ -162,7 +164,7 @@ main {
 }
 
 .subjects-menu ul li {
-     padding: 12px;
+    padding: 12px;
     margin-bottom: 10px;
     background: #353550;
     border-radius: 5px;
@@ -202,21 +204,21 @@ main {
 
 .chat-box {
     display: flex;
-    flex-grow: 1;
-    flex-direction: column; /* Выстраивание сообщений по вертикали */
-    align-items: flex-start; /* Все сообщения по умолчанию выравниены влево */
-    gap: 5px; /* Расстояние между сообщениями */
-    max-height: 400px; /* Высота чата */
-    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    height: 100%; /* Задаём фиксированную высоту */
+    max-height: 400px; /* Ограничиваем максимальную высоту */
     background: #24243e;
     border-radius: 10px;
     padding: 20px;
-    overflow-y: auto;
-    margin-bottom: 20px;
+    overflow-y: auto; /* Позволяем прокрутку только внутри */
     border: 2px solid #353550;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
     color: #e0e0e0;
+    box-sizing: border-box; /* Учитываем padding в размере */
 }
+
 
 /* Сообщения */
 .chat-message {
@@ -241,6 +243,7 @@ main {
     border-left: 4px solid #ffdf91;
     align-self: flex-end;  /* Пользовательский текст справа */
     margin-left: auto; /* Сообщение пользователя выравнивается вправо */
+    flex-shrink: 0;
 }
 
 /* Стиль для индикатора "Печатает..." */
@@ -258,10 +261,11 @@ main {
     text-align: left;
     background: #353550;
     color: #ffffff;
+    padding: 10px;
     margin: 10px 0;
     border-right: 4px solid #ffdf91;
-    margin-right: auto; /* Сообщение бота выравнивается влево */
-    padding: 10px; /* Добавляем отступы для лучшего восприятия */
+    border-radius: 5px;
+    flex-shrink: 0;
 }
 
 /* Стиль для анимации "печатает" */
@@ -622,3 +626,98 @@ upload-section label {
     }
 }
 
+
+
+
+
+/* Стили для бокового меню */
+.sidebar-menu {
+    position: fixed;
+    left: 0; /* Меню изначально за экраном, но сдвигается через transform */
+    top: 60px;
+    width: 250px;
+    height: calc(100% - 60px); /* Высота меню с учётом шапки */
+    background-color: #353550;
+    color: white;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); /* Тень для эффекта объема */
+    transform: translateX(-100%); /* Полностью скрыто за пределами экрана */
+    transition: transform 0.3s ease-in-out; /* Анимация открытия/закрытия */
+    z-index: 900;
+}
+
+/* Когда меню открыто */
+.sidebar-menu.open {
+    transform: translateX(0); /* Показываем меню */
+}
+
+/* Стили для кнопки */
+.menu-toggle {
+    margin-right: 40px; /* Отступ справа */
+    display: inline-block;
+    cursor: pointer;
+    background: linear-gradient(90deg, #ffdf91, #ff9f1c);
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s ease;
+    margin-left: 20px;
+}
+
+/* Кнопка при наведении */
+.menu-toggle:hover {
+    background: linear-gradient(90deg, #ff9f1c, #ffdf91);
+    transform: scale(1.1);
+}
+
+/* Стили для навигации внутри меню */
+.sidebar-menu nav ul {
+    list-style: none;
+    padding: 20px 15px;
+    margin: 0;
+}
+
+.sidebar-menu nav ul li {
+    margin: 15px 0;
+}
+
+.sidebar-menu nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 15px;
+    display: block;
+    transition: background 0.3s ease, color 0.3s ease;
+    border-radius: 5px;
+}
+
+.sidebar-menu nav ul li a:hover {
+    background: #444;
+    color: #ffdf91;
+}
+
+.sidebar-menu nav ul li a.active {
+    font-weight: bold;
+    background: #555;
+}
+
+/* Адаптивные стили для мобильной версии */
+@media (max-width: 768px) {
+    .menu-toggle {
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%; /* Растягиваем кнопку на всю ширину */
+        text-align: center;
+    }
+
+    .sidebar-menu {
+        width: 70%; /* Уменьшаем ширину меню на мобильных устройствах */
+    }
+
+    .sidebar-menu nav ul li a {
+        font-size: 16px; /* Немного уменьшаем текст */
+    }
+}
