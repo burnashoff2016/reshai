@@ -34,7 +34,6 @@ DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "test.misterstalker.site",
     "app.resh-ai.ru"
 ]
 
@@ -83,27 +82,16 @@ ASGI_APPLICATION = 'ReshAI.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# пока используем sqlite
-if os.getenv("DATABASE", "test") == "test":
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'reshai',  # Имя вашей базы данных
+        'USER': 'artem',  # Имя пользователя
+        'PASSWORD': 'reshai',  # Пароль пользователя
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
-elif os.getenv("DATABASE", "test") == "production":
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv("DATABASE"),
-            'USER': os.getenv("DB_USER"),
-            'PASSWORD': os.getenv("DB_PASSWORD"),
-            'HOST': os.getenv("DB_HOST"),
-            'PORT': os.getenv('POSTGRES_PORT', '5432'),
-        }
-    }
-else:
-    raise Exception("DATABASE must be test or production")
+}
 
 
 # Password validation
@@ -153,7 +141,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = '/chat/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # send emails to console
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10 MB

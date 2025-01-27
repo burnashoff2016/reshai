@@ -1,0 +1,182 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  background: #1a1f25;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+}
+
+.registration-container {
+  width: 300px;
+  margin: 12% auto;
+  padding: 20px;
+  background-color: #22272d;
+  border-radius: 8px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 1.5em;
+  color: white;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 10px 10px 40px;
+  border-radius: 5px;
+  background: transparent;
+  border: 2px solid #444;
+  color: #e6b333;
+  outline: none;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-group input:focus {
+  border: 2px solid white;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+}
+
+.input-group .error-message {
+  color: #e6b333;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+.input-group i {
+  position: absolute;
+  top: 50%;
+  left: 12px; /* Центрируем иконку в поле */
+  transform: translateY(-50%);
+  font-size: 18px; /* Размер иконки */
+  color: #7f8084; /* Цвет иконки */
+}
+
+.submit-button {
+  display: flex;
+  justify-content: center;
+}
+
+.submit-button button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 5px;
+  background: #e6b333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button button:hover {
+  background-color: #d3a226;
+}
+
+.submit-button button:active {
+  background-color: #e0a822;
+}
+
+.password-reset-link {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.password-reset-link a {
+  color: #e6b333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.password-reset-link a:hover {
+  color: white;
+}
+
+.info-message {
+  color: #7f8084;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+
+input:invalid {
+  border-color: #e60000;
+}
+
+input:invalid:focus {
+  box-shadow: 0 0 5px rgba(230, 0, 0, 0.7);
+}
+
+input[type="hidden"] {
+  display: none;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.register-link p {
+  font-size: 1em;
+  color: #7f8084;
+  margin-bottom: 10px;
+}
+
+.register-link a {
+  text-decoration: none;
+}
+
+.register-button {
+  padding: 12px 20px;
+  border-radius: 5px;
+  background-color: #e6b333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.register-button:hover {
+  background-color: #d3a226;
+  transform: scale(1.05);
+}
+
+.register-button:active {
+  background-color: #e0a822;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.login-link p {
+  font-size: 1em;
+  color: #7f8084;
+  margin-bottom: 10px;
+}
+
+.login-button {
+  padding: 12px 20px;
+  border-radius: 5px;
+  background-color: #e6b333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #d3a226;
+}
+
+.login-button:active {
+  background-color: #e0a822;
+}
+

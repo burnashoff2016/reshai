@@ -1,12 +1,29 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const menuToggle = document.getElementById("menu-toggle");
-    const sidebarMenu = document.getElementById("sidebar-menu");
+let selectedSubject = null; // Инициализация переменной выбранного предмета
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    // Обработчик клика по кнопке меню
-    menuToggle.addEventListener("click", function() {
-        sidebarMenu.classList.toggle("open"); // Переключаем класс для открытия/закрытия меню
-    });
-    
+function selectSubject(subject) {
+    selectedSubject = subject; // Обновляем выбранный предмет
+
+    const chatBox = document.getElementById("chat-box");
+    chatBox.innerHTML = ''; // Очищаем текущее содержимое chat-box
+
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('system-message');
+    messageDiv.textContent = `Вы выбрали предмет: ${subject}`;
+    chatBox.appendChild(messageDiv);
+
+    const allSubjects = document.querySelectorAll('.subjects-menu ul li');
+    allSubjects.forEach(li => li.classList.remove('selected'));
+
+    const selectedLi = document.querySelector(`#subject-${subject.toLowerCase()}`);
+    if (selectedLi) {
+        selectedLi.classList.add('selected');
+    }
+}
+
+
+
+
      window.selectSubject = selectSubject;
      window.sendMessage = sendMessage;
      window.scrollToBottom = scrollToBottom;
@@ -42,18 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.addEventListener('mousemove', handleResize);
         document.addEventListener('mouseup', stopResize);
     });
-
-    function selectSubject(subject) {
-        selectedSubject = subject;
-        const chatBox = document.getElementById("chat-box");
-        chatBox.innerHTML = `<div class="system-message">Вы выбрали предмет: ${subject}</div>`;
-        const allSubjects = document.querySelectorAll('.subjects-menu ul li');
-        allSubjects.forEach(li => li.classList.remove('selected'));
-        const selectedLi = document.querySelector(`#subject-${subject.toLowerCase()}`);
-        if (selectedLi) {
-            selectedLi.classList.add('selected');
-        }
-    }
 
     function sendMessage() {
         const message = document.getElementById("user-message").value.trim();
@@ -91,7 +96,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         fetch("/", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,  // Добавляем токен
+    },
             body: JSON.stringify({ subject: selectedSubject, message }),
         })
         .then(response => response.json())
@@ -185,7 +193,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     console.log('app.js loaded');
-});
 
 // Добавляем обработчик события на поле ввода
 document.addEventListener('DOMContentLoaded', () => {

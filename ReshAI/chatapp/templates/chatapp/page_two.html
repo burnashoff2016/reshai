@@ -12,6 +12,7 @@
     <meta name="apple-mobile-web-app-title" content="ReshAI" />
     <link rel="manifest" href="{% static 'images/site.webmanifest' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <title>ReshAI</title>
 </head>
 <body>
@@ -46,6 +47,50 @@
 
 <!-- Основной контент -->
 <main>
+    <!-- Боковое меню -->
+    <div id="sidebar" class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
+        <a href="/" class="d-flex align-items-center mb-3 text-white text-decoration-none">
+                <img src="/media/images/image_bar.png" alt="ReshAI Logo" width="32" height="32" class="me-2">
+<!--            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>-->
+            <span class="fs-4">ReshAI</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="/" class="nav-link text-white">
+                    <i class="fas fa-file-alt me-2"></i> Файлы
+                </a>
+            </li>
+            <li>
+                <a href="/page_one" class="nav-link text-white">
+                    <i class="fas fa-photo-video me-2"></i> Медиа
+                </a>
+            </li>
+            <li>
+                <a href="/page_two" class="nav-link active text-white">
+                    <i class="fas fa-comments me-2"></i> Чат
+                </a>
+            </li>
+        </ul>
+        <hr>
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="/media/images/users.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                <strong>{{ user.username }}</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                <li><a class="dropdown-item" href="#">Настройки</a></li>
+                <li><a class="dropdown-item" href="{% url 'profile' %}">Профиль</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-custom btn-lg">Выход</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
     <aside class="sidebar-menu" id="sidebar-menu">
     <nav>
         <ul>
@@ -55,42 +100,45 @@
         </ul>
     </nav>
 </aside>
-    <!-- Левое меню выбора предметов -->
-    <aside class="subjects-menu">
-        <h3>Выберите предмет</h3>
-        <ul>
-            <li onclick="selectSubject('Математика')" id="subject-math">Математика</li>
-            <li onclick="selectSubject('Физика')" id="subject-phy">Физика</li>
-            <li onclick="selectSubject('История')" id="subject-history">История</li>
-            <li onclick="selectSubject('Химия')" id="subject-chemistry">Химия</li>
-            <li onclick="selectSubject('Биология')" id="subject-biology">Биология</li>
-        </ul>
-    </aside>
+   <!-- Конструктор промта -->
+<div class="prompt-builder">
+    <label for="question-count">Укажите количество вопросов:</label>
+    <input type="number" id="question-count" name="question_count" placeholder="Введите количество вопросов" required>
+
+    <label for="topic">Укажите тему теста:</label>
+    <input type="text" id="topic" name="topic" placeholder="Введите тему теста" required>
+
+    <label for="keywords">Укажите ключевые слова:</label>
+    <input type="text" id="keywords" name="keywords" placeholder="Введите ключевые слова" required>
+
+    <label for="difficulty-level">Уровень сложности:</label>
+    <select id="difficulty-level" name="difficulty_level" required>
+        <option value="" disabled selected>Выберите уровень</option>
+        <option value="Начальный">Начальный</option>
+        <option value="Средний">Средний</option>
+        <option value="Продвинутый">Продвинутый</option>
+    </select>
+
+    <label for="single-choice-count">Вопросы с одним вариантом ответа:</label>
+    <input type="number" id="single-choice-count" name="single_choice_count" placeholder="Введите количество" required>
+
+    <label for="multiple-choice-count">Вопросы с множественным выбором:</label>
+    <input type="number" id="multiple-choice-count" name="multiple_choice_count" placeholder="Введите количество" required>
+
+    <label for="gap-fill-count">Вопросы с пропущенным словом:</label>
+    <input type="number" id="gap-fill-count" name="gap_fill_count" placeholder="Введите количество" required>
+
+    <button type="submit" id="generate-test">Составить тест</button>
+</div>
 
     <!-- Окно чата -->
     <section class="chat-container">
         <div id="chat-box" class="chat-box">
-            <div class="system-message">Выберите предмет, чтобы начать чат.</div>
+            <div class="system-message">Введи данные в конструктор!</div>
         </div>
-        <div class="chat-input-container">
-            <textarea id="user-message" placeholder="Введите ваше сообщение..."></textarea>
-            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </section>
-
-    <!-- Загрузка документов -->
-    <section class="upload-section">
-        <div class="resize-handle"></div> <!-- Добавляем зону для перетаскивания -->
-        <form id="upload-form" enctype="multipart/form-data" method="POST">
-            {% csrf_token %}
-            <label for="document" class="upload-label">Загрузите документ:</label>
-            <input type="file" name="document" id="document" accept=".docx" class="file-input">
-            <button type="submit" class="upload-button">Загрузить</button>
-        </form>
-        <div id="document-text"></div>
     </section>
 </main>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" defer></script>
 <script src="{% static 'js/app3.js' %}" defer></script>
 </body>
 </html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Боковая панель -->
+        <aside class="sidebar">
+            <h2>Мой кабинет</h2>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active"><i class="fas fa-user"></i> Мой профиль</a></li>
+                    <li><a href="#"><i class="fas fa-credit-card"></i> Подписки</a></li>
+                    <li><a href="#"><i class="fas fa-cogs"></i> Настройки</a></li>
+                    <li><a href="#"><i class="fas fa-sign-out-alt"></i> Выход</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Основной контент -->
+        <main class="main-content">
+            <!-- Карточка пользователя -->
+            <section class="user-card">
+                <img src="/media/images/users.png" alt="Avatar" class="avatar">
+                <div class="user-info">
+                    <h3>{{ user.username }}</h3>
+                    <p>{{ user.email }}</p>
+                    <button class="btn edit-btn">Редактировать профиль</button>
+                </div>
+            </section>
+
+            <!-- Разделы -->
+            <section class="sections">
+
+                <div class="section">
+            <h3>Личная информация</h3>
+            <form method="POST" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="bio">Биография</label>
+                    <textarea id="bio" name="bio">{{ form.bio.value }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="date_of_birth">Дата рождения</label>
+                    <input type="date" id="date_of_birth" name="date_of_birth" value="{{ form.date_of_birth.value }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Местоположение</label>
+                    <input type="text" id="location" name="location" value="{{ form.location.value }}">
+                </div>
+
+                <button type="submit" class="btn save-btn">Сохранить</button>
+            </form>
+        </div>
+
+                <div class="section">
+                    <h3>Подписки</h3>
+                    <p>Ваш текущий тариф: <strong>Премиум</strong></p>
+                    <button class="btn manage-btn">Управлять подпиской</button>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

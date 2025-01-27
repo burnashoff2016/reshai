@@ -4,3 +4,5 @@ python-decouple>=3.8
 requests>=2.32.3
 python-dotenv
 json5
+python-docx
+deepgram-sdk

@@ -1,11 +1,61 @@
-<!-- templates/signup.html -->
 {% extends 'base_generic.html' %}
 
 {% block content %}
-<h2>Sign up</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Sign up</button>
-</form>
-{% endblock content %}
+<div class="registration-container">
+  <h2>Регистрация закрыта</h2>
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="input-group">
+      <label class="user-icon" >
+        <i class="fas fa-user"></i>
+      </label>
+      {{ form.username }}
+      {% if form.username.errors %}
+        <span class="error-message">{{ form.username.errors }}</span>
+      {% endif %}
+    </div>
+
+    <div class="input-group">
+      <label class="email-icon">
+        <i class="fas fa-envelope"></i>
+      </label>
+      {{ form.email }}
+      {% if form.email.errors %}
+        <span class="error-message">{{ form.email.errors }}</span>
+      {% endif %}
+    </div>
+
+    <div class="input-group">
+      <label class="lock-icon">
+        <i class="fas fa-lock"></i>
+      </label>
+      {{ form.password1 }}
+      {% if form.password1.errors %}
+        <span class="error-message">{{ form.password1.errors }}</span>
+      {% endif %}
+    </div>
+
+    <div class="input-group">
+      <label class="lock-icon">
+        <i class="fas fa-lock"></i>
+      </label>
+      {{ form.password2 }}
+      {% if form.password2.errors %}
+        <span class="error-message">{{ form.password2.errors }}</span>
+      {% endif %}
+    </div>
+
+    <div class="submit-button">
+      <button type="submit">Зарегистрироваться</button>
+    </div>
+  </form>
+
+  <div class="login-link">
+    <p>Уже есть аккаунт?</p>
+    <a href="{% url 'login' %}">
+      <button class="login-button">Войти</button>
+    </a>
+  </div>
+</div>
+{% endblock %}

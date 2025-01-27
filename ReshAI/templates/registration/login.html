@@ -1,40 +1,62 @@
- {% extends "base_generic.html" %}
+{% extends 'base_generic.html' %}
+
 
 {% block content %}
-
-{% if form.errors %}
-  <p>Your username and password didn't match. Please try again.</p>
-{% endif %}
-
-{% if next %}
-  {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-  {% else %}
-    <p>Please login to see this page.</p>
+<div class="registration-container">
+  <h2>Вход</h2>
+  {% if form.errors %}
+    <p class="error-message">Ваше имя пользователя или пароль введены неверно. Пожалуйста, попробуйте ещё раз.</p>
   {% endif %}
-{% endif %}
+
+  {% if next %}
+    {% if user.is_authenticated %}
+      <p class="error-message">Ваш аккаунт не имеет доступа к этой странице. Пожалуйста, войдите с другим аккаунтом.</p>
+    {% else %}
+      <p class="info-message">Пожалуйста, войдите в свой аккаунт, чтобы получить доступ к этой странице.</p>
+    {% endif %}
+  {% endif %}
 
 <form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-<table>
+  {% csrf_token %}
 
-<tr>
-  <td>{{ form.username.label_tag }}</td>
-  <td>{{ form.username }}</td>
-</tr>
 
-<tr>
-  <td>{{ form.password.label_tag }}</td>
-  <td>{{ form.password }}</td>
-</tr>
-</table>
+<div class="input-group">
+  <label class="user-icon">
+    <i class="fas fa-user"></i>
+  </label>
+  <input type="text" name="username" id="username" placeholder="Логин">
+  {% if form.username.errors %}
+    <span class="error-message">{{ form.username.errors }}</span>
+  {% endif %}
+</div>
 
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
+<div class="input-group">
+  <label class="lock-icon">
+    <i class="fas fa-lock"></i>
+  </label>
+  <input type="password" name="password" id="password" placeholder="Пароль">
+  {% if form.password.errors %}
+    <span class="error-message">{{ form.password.errors }}</span>
+  {% endif %}
+</div>
+
+
+
+  <div class="submit-button">
+    <button type="submit">Войти</button>
+  </div>
+
+  <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
-{# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-
+  <p class="password-reset-link">
+    <a href="{% url 'password_reset' %}">Забыли пароль?</a>
+  </p>
+  <div class="register-link">
+    <p>Ещё нет аккаунта?</p>
+    <a href="{% url 'signup' %}">
+      <button class="register-button">Зарегистрироваться</button>
+    </a>
+  </div>
+</div>
 {% endblock %}

@@ -141,55 +141,6 @@ main {
     overflow-y: auto;
 }
 
-/* Левое меню выбора предметов */
-.subjects-menu {
-    width: 250px;
-    background: #24243e;
-    padding: 20px;
-    border-right: 1px solid #383850;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.subjects-menu h3 {
-    margin: 0 0 10px;
-    font-size: 1.5em;
-    color: #ffdf91;
-    font-weight: 600; /* Жирный шрифт */
-    font-family: 'Roboto', sans-serif; /* Шрифт для заголовка */
-}
-
-.subjects-menu ul {
-    list-style: none;
-    padding: 0;
-}
-
-.subjects-menu ul li {
-    padding: 12px;
-    margin-bottom: 10px;
-    background: #353550;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #e0e0e0;
-    text-align: center;
-    transition: transform 0.3s, background 0.3s, color 0.3s;
-    font-weight: 500; /* Устанавливаем жирность */
-    font-family: 'Roboto', sans-serif; /* Шрифт для предметов */
-    font-size: 1.2em; /* Увеличиваем размер шрифта */
-}
-/* При наведении */
-.subjects-menu ul li:hover {
-    background: #ffdf91;
-    color: #24243e;
-    transform: scale(1.05);
-}
-
-.subjects-menu ul li.selected {
-    background: #ffdf91;
-    color: #24243e;
-    font-weight: bold;
-    transform: scale(1.05); /* Увеличиваем элемент при выборе */
-    transition: transform 0.3s, background 0.3s;
-}
 
 /* Окно чата */
 .chat-container {
@@ -721,3 +672,97 @@ upload-section label {
         font-size: 16px; /* Немного уменьшаем текст */
     }
 }
+
+/* Общие стили для всего конструктора */
+.prompt-builder {
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #1a1a1a; /* Тёмный фон */
+    color: #f0f0f0; /* Светлый текст */
+    max-width: 500px; /* Ограничиваем ширину */
+    width: 100%; /* Делает контейнер адаптивным */
+}
+
+/* Заголовок для формы */
+.prompt-builder h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Стили для текста */
+.prompt-builder label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #f0f0f0; /* Белый цвет для текста */
+}
+
+.prompt-builder input,
+.prompt-builder select,
+.prompt-builder textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #2c2f34; /* Темный фон для input и select */
+    color: #ffffff; /* Белый текст в input */
+}
+
+.prompt-builder input::placeholder,
+.prompt-builder select::placeholder,
+.prompt-builder textarea::placeholder {
+    color: #aaa; /* Светлый цвет для плейсхолдера */
+}
+
+/* Кнопка */
+.prompt-builder button {
+    padding: 12px 20px;
+    background-color: #4e73df; /* Цвет кнопки */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 12px;
+}
+
+.prompt-builder button:hover {
+    background-color: #2e5bb0; /* Цвет при наведении на кнопку */
+}
+
+/* Подсветка ошибок */
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: -8px;
+    margin-bottom: 12px;
+}
+
+/* Выход */
+form button.btn-custom {
+    background: none;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 8px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+form button.btn-custom:hover {
+    color: #ffdf91;
+}
+
+

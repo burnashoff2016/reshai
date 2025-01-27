@@ -354,22 +354,18 @@ main {
 }
 
 
-..upload-section {
+.upload-section {
     margin-top: 20px;
     padding: 15px;
     background-color: #1e1e2f; /* Темнее для акцента */
     border: 1px solid #4e54c8; /* Цвет обводки */
     border-radius: 8px;
-    transition: width 0.2s ease;
     display: flex;
     flex-direction: column;
     gap: 15px;
-    min-width: 700px;
-    max-width: 700px;
-    height: auto;
-    min-height: 180px;
+    width: 700px; /* Фиксированная ширина */
     position: relative;
-    overflow: hidden;
+    overflow: visible; /* Позволяет блоку увеличиваться вниз */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* Добавим лёгкую тень */
 }
 
@@ -435,8 +431,12 @@ main {
     padding: 15px;
     border-radius: 5px;
     border: 1px solid #4e54c8;
-    max-height: 300px;
-    overflow-y: auto; /* Добавляем прокрутку для длинного текста */
+    width: 100%; /* Фиксированная ширина */
+    max-width: 100%; /* Защита от переполнения */
+    word-wrap: break-word; /* Перенос длинных слов */
+    white-space: pre-wrap; /* Сохраняем форматирование и переносим строки */
+    overflow: hidden; /* Убираем скроллинг */
+    min-height: 150px; /* Минимальная высота */
     box-shadow: inset 0px 2px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -696,3 +696,25 @@ main {
         font-size: 16px; /* Немного уменьшаем текст */
     }
 }
+
+/* Выход */
+form button.btn-custom {
+    background: none;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 8px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+form button.btn-custom:hover {
+    color: #ffdf91;
+}
+
+
+
