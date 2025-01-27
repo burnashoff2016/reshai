@@ -87,7 +87,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'reshai',  # Имя вашей базы данных
         'USER': 'artem',  # Имя пользователя
-        'PASSWORD': 'Qz754wx04ec95!',  # Пароль пользователя
+        'PASSWORD': 'Qz754wx04ec95!',  # Пароль server
+        # 'PASSWORD': 'reshai',  # Пароль local
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -151,20 +152,4 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # send emails to console
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10 MB
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
+
