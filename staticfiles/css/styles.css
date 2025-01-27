@@ -1,0 +1,540 @@
+/* Общие стили */
+html, body {
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #1a1f25; /* Темный фон */
+    color: #ffffff;
+    overflow: hidden;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+
+/* Стили для сообщения "Вы выбрали предмет" */
+.system-message {
+    background: #4e54c8;
+    color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.1em;
+    text-align: center;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    opacity: 0;  /* Начальная прозрачность */
+    transform: translateY(20px);  /* Начальная позиция */
+    animation: fadeInUp 0.5s ease-out forwards; /* Анимация появления */
+}
+
+/* Анимация появления и движения вверх */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);  /* Начинаем с небольшой смещения вниз */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);  /* Конечная позиция */
+    }
+}
+
+/* Основной контент */
+main {
+    display: flex;
+    flex: 1;
+    height: 100%;
+    padding-top: 0; /* Добавляем отступ сверху для основного контента, чтобы он не перекрывался меню */
+    overflow-y: auto;
+}
+
+/* Левое меню выбора предметов */
+.subjects-menu {
+    width: 100%;
+    overflow-x: auto; /* Включаем горизонтальную прокрутку */
+    padding: 20px 0;
+    box-sizing: border-box;
+}
+
+.subjects-menu h3 {
+    margin-top: 0;
+    padding-bottom: 15px;
+    font-size: 1.5em;
+    color: #ffdf91;
+    font-weight: 600;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+}
+
+/* Стили для списка с горизонтальной прокруткой */
+.subjects-menu ul {
+    display: flex; /* Размещаем элементы списка в ряд */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.subjects-menu ul li {
+    padding: 12px 25px; /* Добавляем отступы для удобства */
+    margin-right: 10px; /* Отступ между элементами */
+    background: #353550;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #e0e0e0;
+    text-align: center;
+    transition: transform 0.3s, background 0.3s, color 0.3s;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2em;
+}
+
+/* При наведении */
+.subjects-menu ul li:hover {
+    background: #ffdf91;
+    color: #24243e;
+    transform: scale(1.05);
+}
+
+/* Стили для выбранного элемента */
+.subjects-menu ul li.selected {
+    background: #ffdf91;
+    color: #24243e;
+    font-weight: bold;
+    transform: scale(1.05);
+    transition: transform 0.3s, background 0.3s;
+}
+
+
+/* Окно чата */
+.chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background: #1a1f25;
+    height: 100%; /* Устанавливаем высоту всего окна */
+    overflow-y: auto;
+}
+
+.chat-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    height: 100%; /* Задаём фиксированную высоту */
+    max-height: 400px; /* Ограничиваем максимальную высоту */
+    background: #24243e;
+    border-radius: 10px;
+    padding: 20px;
+    overflow-y: auto; /* Позволяем прокрутку только внутри */
+    border: 2px solid #353550;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+    color: #e0e0e0;
+    box-sizing: border-box; /* Учитываем padding в размере */
+}
+
+
+/* Сообщения */
+.chat-message {
+    display: block; /* Используем block для сообщения */
+    max-width: 80%; /* Ограничиваем максимальную ширину */
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease forwards;
+    word-wrap: break-word; /* Перенос слов на новую строку */
+    min-height: 50px; /* Минимальная высота для сообщения */
+    line-height: 1.5; /* Расстояние между строками */
+}
+
+.chat-message.user {
+    text-align: left;
+    background: linear-gradient(90deg, #4e54c8, #8f94fb);
+    color: #ffffff;
+    border-left: 4px solid #ffdf91;
+    align-self: flex-end;  /* Пользовательский текст справа */
+    margin-left: auto; /* Сообщение пользователя выравнивается вправо */
+    flex-shrink: 0;
+}
+
+/* Стиль для индикатора "Печатает..." */
+.chat-message.typing-indicator {
+    font-style: italic;
+    color: #ffffff;
+    padding: 5px;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+/* Выделение для бота */
+.chat-message.bot {
+    text-align: left;
+    background: #353550;
+    color: #ffffff;
+    padding: 10px;
+    margin: 10px 0;
+    border-right: 4px solid #ffdf91;
+    border-radius: 5px;
+    flex-shrink: 0;
+}
+
+/* Стиль для анимации "печатает" */
+.chat-message.typing-indicator::after {
+    content: " . . .";
+    animation: typing 1.5s infinite steps(3, end);
+}
+
+@keyframes typing {
+    0% { content: " ."; }
+    50% { content: " . ."; }
+    100% { content: " . . ."; }
+}
+
+.chat-message.bot ul {
+    margin: 10px 0;
+    padding-left: 20px;
+    list-style: decimal;
+}
+
+.chat-message.bot ul li {
+    margin-bottom: 10px;
+}
+
+/* Анимация для бота*/
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Поле ввода текста */
+.chat-input-container {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Увеличим расстояние между текстом и кнопкой */
+    position: relative;
+    padding: 10px 0; /* Убираем дополнительный отступ сверху */
+    top: 180px;
+}
+
+.chat-input-container textarea {
+    flex: 1;
+    resize: none;
+    padding: 15px;
+    border: 2px solid #353550;
+    border-radius: 25px; /* Больше скругление */
+    height: 120px;
+    font-size: 1.2em;
+    font-weight: 400; /* Сделаем шрифт нормальным */
+    font-family: 'Roboto', sans-serif;
+    background: #343541; /* Темный фон */
+    color: #e0e0e0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    transition: border 0.3s, box-shadow 0.3s ease; /* Плавные переходы */
+}
+
+.chat-input-container textarea:focus {
+    border-color: #4e54c8; /* Цвет рамки при фокусе */
+    outline: none;
+    box-shadow: 0 4px 10px rgba(78, 84, 200, 0.5); /* Легкая тень при фокусе */
+}
+
+.chat-input-container textarea::placeholder {
+    color: #888;
+    font-weight: 400;
+}
+
+/* Кнопка отправки */
+.chat-input-container button {
+    background: linear-gradient(90deg, #4e54c8, #8f94fb);
+    color: white;
+    border: none;
+    border-radius: 50px; /* Округлая кнопка */
+    padding: 15px 25px;
+    font-size: 1.2em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Легкая тень */
+}
+
+/* Эффекты для кнопки */
+.chat-input-container button:hover {
+    background: linear-gradient(90deg, #ffdf91, #ff9f1c);
+    transform: scale(1.05); /* Легкое увеличение */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Тень при наведении */
+}
+
+.chat-input-container button:active {
+    transform: scale(1); /* Возвращаем в исходное положение при нажатии */
+}
+
+/* Фокус на кнопке */
+.chat-input-container button:focus {
+    outline: none;
+    box-shadow: 0 4px 10px rgba(78, 84, 200, 0.5); /* Тень при фокусе */
+}
+
+
+
+.upload-section {
+    padding: 10px;
+    background-color: #1a1f25;
+    border: 1px solid #0d6efd;
+    border-radius: 5px;
+    transition: width 0.2s ease; /* Плавное изменение ширины */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 700px;
+    max-width: 700px; /* Максимальная ширина */
+    height: 100%; /* Высота зависит от содержимого */
+    min-height: 150px; /* Минимальная высота */
+    position: relative;
+    overflow: hidden; /* Скрыть излишние элементы, если они выходят за пределы */
+}
+
+/* Контейнер формы для выравнивания элементов */
+#upload-form {
+    display: flex;
+    align-items: center; /* Выравнивание элементов по вертикали */
+    gap: 10px; /* Добавление промежутков между элементами */
+}
+
+/* Обеспечиваем перенос длинных слов в input */
+.upload-section input[type="file"] {
+    word-wrap: break-word;  /* Перенос длинных слов */
+    overflow-wrap: break-word; /* Принудительный перенос слов */
+    white-space: normal; /* Разрешаем перенос строк */
+    width: 100%; /* Задаем ширину input, чтобы он не выходил за пределы */
+}
+
+/* Класс для перетаскивания */
+.resize-handle {
+    width: 10px; /* Ширина ручки */
+    background-color: #ccc; /* Цвет для видимости */
+    cursor: ew-resize;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    z-index: 1000; /* Убедитесь, что элемент выше других */
+    display: block; /* Убедитесь, что элемент видим */
+}
+
+upload-section label {
+    font-size: 1.2em; /* Размер шрифта */
+    color: #4e54c8; /* Цвет текста */
+    font-weight: 600; /* Жирное начертание */
+    font-family: 'Roboto', sans-serif; /* Шрифт для текста */
+    margin-bottom: 10px;
+    text-align: left; /* Выровнять текст слева */
+}
+
+.upload-label {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #f1f1f1;
+    margin: 0;
+    display: block;  /* Блочный элемент, чтобы текст занимал всю ширину */
+    text-align: center;  /* Выравнивание по центру */
+    white-space: nowrap; /* Запрещаем перенос текста */
+    background-color: #24243e;  /* Фоновый цвет */
+    padding: 10px;  /* Отступы вокруг текста */
+    border-radius: 8px;  /* Скругленные углы */
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);  /* Легкая тень */
+}
+
+.upload-button:hover {
+    background-color: #45a049; /* Темно-зеленый при наведении */
+}
+
+/* Стиль для кнопки */
+.upload-button {
+    background-color: #4CAF50; /* Зеленый цвет */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/* Стиль для input */
+.file-input {
+    font-size: 14px;
+    padding: 5px;
+    color: #333;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+
+/* Стилизация кнопки "Обзор" */
+.upload-section input[type="file"] {
+    background-color: #4e54c8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: background 0.3s ease;
+    display: inline-block;
+    flex-grow: 1;
+}
+
+.upload-section input[type="file"]:hover {
+    background-color: #8f94fb; /* Изменение цвета при наведении */
+}
+
+/* Стилизация кнопки "Загрузить" */
+.upload-section button {
+    background-color: #ffdf91;
+    color: #24243e;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    align-self: flex-start; /* Размещение кнопки слева */
+    flex-shrink: 0; /* Не позволять кнопке сжиматься */
+    margin-right: 10px;
+}
+
+
+/* При наведении на кнопку "Загрузить" */
+.upload-section button:hover {
+    background-color: #ff9f1c;
+    transform: scale(1.1);
+}
+
+/* Контейнер для кнопок выровняем на одном уровне */
+.upload-section form {
+    display: flex;
+    gap: 10px;
+    align-items: center; /* Для выравнивания кнопок по вертикали */
+    justify-content: space-between; /* Чтобы кнопки не расползались */
+}
+
+#document-text {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #353550;
+    border: 1px solid #383850;
+    border-radius: 8px;
+    max-height: 300px; /* Увеличиваем максимальную высоту */
+    overflow-y: auto;
+    color: #e0e0e0;
+    font-size: 1.1em;
+    line-height: 1.6; /* Увеличиваем межстрочный интервал для удобства чтения */
+    animation: fadeIn 0.5s ease-out forwards; /* Анимация появления */
+}
+
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Мобильная версия: уменьшение размера шрифта, выравнивание элементов */
+@media (max-width: 768px) {
+    /* Левое меню */
+    .subjects-menu {
+        width: 100%; /* Меню растягивается на всю ширину */
+    }
+
+    /* Окно чата */
+    .chat-container {
+        padding: 10px;
+    }
+}
+
+/* Добавим дополнительные медиазапросы для улучшения читабельности на слабых экранах */
+@media (max-width: 480px) {
+    .chat-input-container button {
+        padding: 10px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Левое меню */
+    .subjects-menu {
+        width: 100%; /* Меню растягивается на всю ширину */
+        padding: 15px; /* Уменьшаем отступы для мобильных */
+    }
+
+    .subjects-menu h3 {
+        font-size: 1.3em; /* Уменьшаем заголовок меню */
+    }
+
+    .subjects-menu ul li {
+        padding: 10px; /* Уменьшаем отступы в элементах меню */
+    }
+
+    /* Окно чата */
+    .chat-container {
+        padding: 10px;
+        height: calc(100vh - 60px); /* Уменьшаем высоту окна чата */
+    }
+
+    .chat-box {
+        max-height: 300px; /* Уменьшаем максимальную высоту чата */
+    }
+
+    .chat-message {
+        font-size: 0.9em; /* Уменьшаем размер шрифта сообщений */
+    }
+
+    /* Поле ввода текста */
+    .chat-input-container textarea {
+        font-size: 1em; /* Уменьшаем размер шрифта в поле ввода */
+        height: 80px; /* Уменьшаем высоту текстового поля */
+    }
+
+    .chat-input-container button {
+        padding: 10px 15px; /* Уменьшаем размеры кнопки */
+    }
+}
+
+/* Выход */
+form button.btn-custom {
+    background: none;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 8px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+form button.btn-custom:hover {
+    color: #ffdf91;
+}
+

@@ -87,7 +87,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'reshai',  # Имя вашей базы данных
         'USER': 'artem',  # Имя пользователя
-        'PASSWORD': 'reshai',  # Пароль пользователя
+        'PASSWORD': 'Qz754wx04ec95!',  # Пароль пользователя
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -132,6 +132,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+STATIC_ROOT = "/var/www/reshai/staticfiles"
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -148,4 +151,20 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # send emails to console
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10 MB
 
-
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
