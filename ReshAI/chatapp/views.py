@@ -175,7 +175,7 @@ def chatbot_view(request):
             question = template.format(question=user_message, document=extracted_text)
 
             # Получение ответа от Perplexity API
-            bot_response = get_perplexity_response(question)
+            bot_response = get_chatgpt_response(question)
             return JsonResponse({'reply': bot_response}, status=200)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Некорректные данные'}, status=400)
