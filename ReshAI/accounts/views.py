@@ -1,6 +1,7 @@
 
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseForbidden
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic import FormView
@@ -15,7 +16,7 @@ class SignUpView(generic.CreateView):
 
     def dispatch(self, request, *args, **kwargs):
         # Блокируем доступ ко View
-        return HttpResponseForbidden("Регистрация временно отключена. Приносим свои извинения!")
+        return render(request, 'registration/403_signup.html')
 
 class LoginView(FormView):
     form_class = forms.LoginForm

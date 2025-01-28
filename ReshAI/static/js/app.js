@@ -1,6 +1,11 @@
 let selectedSubject = null; // Инициализация переменной выбранного предмета
 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+window.addEventListener('load', function() {
+    document.body.classList.add('loaded');
+});
+
+
 function selectSubject(subject) {
     selectedSubject = subject; // Обновляем выбранный предмет
 
@@ -122,7 +127,7 @@ function selectSubject(subject) {
     }
 
     function animateTypingWithCleanText(element, text) {
-        const cleanedText = text.replace(/###|\r|\n/g, '\n').trim();
+        const cleanedText = text.replace(/###|##|\r|\n/g, '\n').trim();
         const paragraphs = cleanedText.split(/\n{2,}/).map(part => part.trim()).filter(part => part.length > 0);
 
         let currentParagraphIndex = 0;

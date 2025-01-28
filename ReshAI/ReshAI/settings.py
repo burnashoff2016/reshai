@@ -35,6 +35,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "app.resh-ai.ru"
+    "www.app.resh-ai.ru"
 ]
 
 # Application definition
@@ -87,8 +88,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'reshai',  # Имя вашей базы данных
         'USER': 'artem',  # Имя пользователя
-        'PASSWORD': 'Qz754wx04ec95!',  # Пароль server
-        # 'PASSWORD': 'reshai',  # Пароль local
+        # 'PASSWORD': 'Qz754wx04ec95!',  # Пароль server
+        'PASSWORD': 'reshai',  # Пароль local
         'HOST': 'localhost',
         'PORT': '5432',
     }

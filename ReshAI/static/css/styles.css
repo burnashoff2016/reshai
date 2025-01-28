@@ -58,9 +58,15 @@ main {
     overflow-x: auto; /* Включаем горизонтальную прокрутку */
     padding: 20px 0;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .subjects-menu h3 {
+    visibility: hidden; /* Скрываем текст до загрузки */
+    opacity: 0;
     margin-top: 0;
     padding-bottom: 15px;
     font-size: 1.5em;
@@ -68,7 +74,14 @@ main {
     font-weight: 600;
     font-family: 'Roboto', sans-serif;
     text-align: center;
+    transition: opacity 0.5s ease-in-out;
 }
+
+body.loaded .subjects-menu h3 {
+    visibility: visible; /* Делаем текст видимым */
+    opacity: 1; /* Плавно показываем */
+}
+
 
 /* Стили для списка с горизонтальной прокруткой */
 .subjects-menu ul {
