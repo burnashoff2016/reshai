@@ -69,7 +69,7 @@ def get_chatgpt_response(question):
         "Content-Type": "application/json",
     }
     payload = {
-        "model": "gpt-4o",  # Используйте модель, доступную для вашего ключа
+        "model": "gpt-4o-mimi",  # Используйте модель, доступную для вашего ключа
         "messages": [{"role": "user", "content": question}],
         "max_tokens": 150,
         "temperature": 0.7,
