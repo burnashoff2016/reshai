@@ -22,10 +22,16 @@ from deepgram import Deepgram
 import io
 from typing import Optional
 from concurrent.futures import ThreadPoolExecutor
+
+from dotenv import load_dotenv
 from moviepy import *
+from openai import OpenAI
 
 from accounts.forms import UserProfileForm
 from accounts.models import UserProfile
+import openai
+
+load_dotenv()
 
 # Получение API-ключа из переменных окружения
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
@@ -62,41 +68,29 @@ def load_prompts2():
 import requests
 
 
+openai.api_key = OPENAI_API_KEY
+
 def get_chatgpt_response(question):
-    api_url = "https://api.openai.com/v1/chat/completions"
-    headers = {
-        "Authorization": f"Bearer {OPENAI_API_KEY}",
-        "Content-Type": "application/json",
-    }
-    payload = {
-        "model": "gpt-4o-mimi",  # Используйте модель, доступную для вашего ключа
-        "messages": [{"role": "user", "content": question}],
-        "max_tokens": 150,
-        "temperature": 0.7,
-        "top_p": 1,
-        "frequency_penalty": 0,
-        "presence_penalty": 0,
-    }
-
     try:
-        # Отправка запроса
-        response = requests.post(api_url, headers=headers, json=payload)
+        client = OpenAI()
+        # Отправляем запрос к OpenAI API для получения ответа от модели
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",  # Используем модель, доступную для вашего ключа
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": question},
+            ],
+            max_tokens=1000,
+            temperature=0.7
+        )
 
-        # Проверка статуса ответа
-        response.raise_for_status()
-
-        # Преобразование ответа в JSON и извлечение данных
-        data = response.json()
-
-        # Извлечение ответа
-        answer = data['choices'][0]['message']['content']
+        # Правильный доступ к данным из объекта response
+        answer = response.choices[0].message.content
         return answer
-    except requests.exceptions.RequestException as e:
+
+    except Exception as e:
         print(f"Ошибка при запросе к OpenAI API: {e}")
         return "Произошла ошибка при обращении к API OpenAI."
-    except Exception as e:
-        print(f"Общая ошибка: {e}")
-        return "Произошла ошибка."
 
 def get_perplexity_response(question):
     api_url = "https://api.perplexity.ai/chat/completions"
@@ -175,7 +169,7 @@ def chatbot_view(request):
             question = template.format(question=user_message, document=extracted_text)
 
             # Получение ответа от Perplexity API
-            bot_response = get_perplexity_response(question)
+            bot_response = get_chatgpt_response(question)
             return JsonResponse({'reply': bot_response}, status=200)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Некорректные данные'}, status=400)
@@ -283,7 +277,7 @@ def page_one(request):
             question = template.format(question=user_message, document=transcribed_text)
 
             # Получение ответа от Perplexity API
-            bot_response = get_perplexity_response(question)
+            bot_response = get_chatgpt_response(question)
             return JsonResponse({'reply': bot_response}, status=200)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Некорректные данные'}, status=400)
@@ -317,7 +311,7 @@ def page_two(request):
             question = prompt_template.format(question=f"Создать тест с {question_count} вопросами по теме {topic} с ключевыми словами: {keywords}, сложность: {difficulty}, количество одиночных вопросов: {single_choice_count}, для множественного выбора: {multiple_choice_count}, для теста с пропусками: {gap_fill_count}")
 
             # Получаем ответ от Perplexity API
-            bot_response = get_perplexity_response(question)
+            bot_response = get_chatgpt_response(question)
             return JsonResponse({'reply': bot_response}, status=200)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Некорректные данные'}, status=400)
