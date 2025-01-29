@@ -175,7 +175,7 @@ def chatbot_view(request):
             question = template.format(question=user_message, document=extracted_text)
 
             # Получение ответа от Perplexity API
-            bot_response = get_chatgpt_response(question)
+            bot_response = get_perplexity_response(question)
             return JsonResponse({'reply': bot_response}, status=200)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Некорректные данные'}, status=400)
@@ -283,7 +283,7 @@ def page_one(request):
             question = template.format(question=user_message, document=transcribed_text)
 
             # Получение ответа от Perplexity API
-            bot_response = get_chatgpt_response(question)
+            bot_response = get_perplexity_response(question)
             return JsonResponse({'reply': bot_response}, status=200)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Некорректные данные'}, status=400)
@@ -317,7 +317,7 @@ def page_two(request):
             question = prompt_template.format(question=f"Создать тест с {question_count} вопросами по теме {topic} с ключевыми словами: {keywords}, сложность: {difficulty}, количество одиночных вопросов: {single_choice_count}, для множественного выбора: {multiple_choice_count}, для теста с пропусками: {gap_fill_count}")
 
             # Получаем ответ от Perplexity API
-            bot_response = get_chatgpt_response(question)
+            bot_response = get_perplexity_response(question)
             return JsonResponse({'reply': bot_response}, status=200)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Некорректные данные'}, status=400)

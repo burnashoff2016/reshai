@@ -48,7 +48,7 @@ main {
     display: flex;
     flex: 1;
     height: 100%;
-    padding-top: 0; /* Добавляем отступ сверху для основного контента, чтобы он не перекрывался меню */
+    padding-top: 0;
     overflow-y: auto;
 }
 

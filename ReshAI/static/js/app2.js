@@ -1,3 +1,7 @@
+window.addEventListener('load', function() {
+    document.body.classList.add('loaded');
+});
+
 document.getElementById('upload-form').addEventListener('submit', async function (event) {
     event.preventDefault(); // Отменяем стандартное поведение формы
 

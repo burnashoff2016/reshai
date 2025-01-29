@@ -1,12 +1,12 @@
 /* Общие стили */
-body {
+html, body {
+    height: 100%;
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    background-color: #1c1c28; /* Темный фон */
+    background-color: #1a1f25; /* Темный фон */
     color: #ffffff;
     overflow: hidden;
 }
@@ -14,95 +14,6 @@ body {
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
-/* Верхнее меню */
-.top-nav {
-    display: flex;
-    justify-content: space-between; /* Логотип слева, меню будет по центру */
-    align-items: center;
-    background: linear-gradient(90deg, #4e54c8, #8f94fb);
-    color: #ffffff;
-    padding: 15px 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    position: fixed;
-    top: 0;
-    z-index: 1000;
-}
-
-.top-nav .logo {
-    font-size: 1.8em;
-    font-weight: 700;
-    margin-right: auto; /* Выровнять логотип в левый угол */
-    font-family: 'Roboto', sans-serif;
-    letter-spacing: 2px; /* Увеличим межбуквенный интервал для улучшения читаемости */
-}
-
-.top-nav nav {
-    display: flex;
-    justify-content: center; /* Меню будет по центру */
-    flex-grow: 1; /* Дает возможность меню расширяться */
-}
-
-.top-nav nav ul {
-    display: flex;
-    justify-content: center; /* Центрируем меню */
-    align-items: center;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.top-nav nav ul li {
-    margin: 0 20px;
-    transition: all 0.3s ease;
-}
-
-.top-nav nav ul li a {
-    text-decoration: none;
-    color: #ffffff;
-    font-weight: 700;
-    font-family: 'Roboto', sans-serif;
-    font-size: 1.2em;
-    padding: 10px 20px;
-    border-radius: 8px;
-    transition: color 0.3s ease, transform 0.3s ease;
-    letter-spacing: 1px; /* Увеличиваем межбуквенный интервал */
-}
-
-.top-nav nav ul li a:hover,
-.top-nav nav ul li a.active {
-    color: #ffdf91;
-    transform: scale(1.1);
-}
-
-.top-nav nav ul li a.active {
-    color: #ffdf91; /* Убедитесь, что активный пункт будет выделен */
-}
-
-@media (max-width: 768px) {
-    .top-nav {
-        flex-direction: column; /* Меню станет вертикальным */
-        align-items: flex-start; /* Выравнивание по левому краю */
-        padding: 10px 15px;
-    }
-
-    .top-nav .logo {
-        margin-bottom: 10px; /* Отступ между логотипом и меню */
-    }
-
-    .top-nav nav ul {
-        flex-direction: column; /* Вертикальное расположение пунктов меню */
-        width: 100%;
-    }
-
-    .top-nav nav ul li {
-        margin: 10px 0; /* Расстояние между пунктами меню */
-    }
-
-    .top-nav nav ul li a {
-        font-size: 1.1em; /* Увеличим шрифт для удобства на телефонах */
-    }
-}
 
 /* Стили для сообщения "Вы выбрали предмет" */
 .system-message {
@@ -136,46 +47,63 @@ body {
 main {
     display: flex;
     flex: 1;
-    height: calc(100vh - 70px);
-    padding-top: 70px; /* Добавляем отступ сверху для основного контента, чтобы он не перекрывался меню */
+    height: 100%;
+    padding-top: 0;
     overflow-y: auto;
 }
 
 /* Левое меню выбора предметов */
 .subjects-menu {
-    width: 250px;
-    background: #24243e;
-    padding: 20px;
-    border-right: 1px solid #383850;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    overflow-x: auto; /* Включаем горизонтальную прокрутку */
+    padding: 20px 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .subjects-menu h3 {
-    margin: 0 0 10px;
+    visibility: hidden; /* Скрываем текст до загрузки */
+    opacity: 0;
+    margin-top: 0;
+    padding-bottom: 15px;
     font-size: 1.5em;
     color: #ffdf91;
-    font-weight: 600; /* Жирный шрифт */
-    font-family: 'Roboto', sans-serif; /* Шрифт для заголовка */
+    font-weight: 600;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    transition: opacity 0.5s ease-in-out;
 }
 
+body.loaded .subjects-menu h3 {
+    visibility: visible; /* Делаем текст видимым */
+    opacity: 1; /* Плавно показываем */
+}
+
+/* Стили для списка с горизонтальной прокруткой */
 .subjects-menu ul {
+    display: flex; /* Размещаем элементы списка в ряд */
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .subjects-menu ul li {
-    padding: 12px;
-    margin-bottom: 10px;
+    padding: 12px 25px; /* Добавляем отступы для удобства */
+    margin-right: 10px; /* Отступ между элементами */
     background: #353550;
     border-radius: 5px;
     cursor: pointer;
     color: #e0e0e0;
     text-align: center;
     transition: transform 0.3s, background 0.3s, color 0.3s;
-    font-weight: 500; /* Устанавливаем жирность */
-    font-family: 'Roboto', sans-serif; /* Шрифт для предметов */
-    font-size: 1.2em; /* Увеличиваем размер шрифта */
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2em;
 }
+
 /* При наведении */
 .subjects-menu ul li:hover {
     background: #ffdf91;
@@ -197,8 +125,8 @@ main {
     display: flex;
     flex-direction: column;
     padding: 20px;
-    background: #1c1c28;
-    height: 100vh; /* Устанавливаем высоту всего окна */
+    background: #1a1f25;
+    height: 100%; /* Устанавливаем высоту всего окна */
     overflow-y: auto;
 }
 
@@ -306,9 +234,10 @@ main {
 .chat-input-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
     position: relative;
-    top: 160px;
+    padding: 10px 0;
+    top: 180px;
 }
 
 .chat-input-container textarea {
@@ -316,19 +245,21 @@ main {
     resize: none;
     padding: 15px;
     border: 2px solid #353550;
-    border-radius: 10px;
+    border-radius: 25px;
     height: 120px;
     font-size: 1.2em; /* Увеличиваем размер шрифта */
-    font-weight: 600; /* Жирный шрифт */
+    font-weight: 400; /* Жирный шрифт */
     font-family: 'Roboto', sans-serif; /* Изменяем шрифт на Roboto */
-    background: #24243e;
+    background: #343541;
     color: #e0e0e0;
-    transition: border 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: border 0.3s, box-shadow 0.3s ease;
 }
 
 .chat-input-container textarea:focus {
     border-color: #4e54c8;
     outline: none;
+    box-shadow: 0 4px 10px rgba(78, 84, 200, 0.5);
 }
 
 .chat-input-container textarea::placeholder {
@@ -340,17 +271,29 @@ main {
     background: linear-gradient(90deg, #4e54c8, #8f94fb);
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 50px;
     padding: 15px 25px;
-    font-size: 1.1em;
+    font-size: 1.2em;
     font-weight: 500;
     cursor: pointer;
-    transition: background 0.3s, transform 0.3s;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .chat-input-container button:hover {
     background: linear-gradient(90deg, #ffdf91, #ff9f1c);
-    transform: scale(1.1);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.chat-input-container button:active {
+    transform: scale(1); /* Возвращаем в исходное положение при нажатии */
+}
+
+/* Фокус на кнопке */
+.chat-input-container button:focus {
+    outline: none;
+    box-shadow: 0 4px 10px rgba(78, 84, 200, 0.5); /* Тень при фокусе */
 }
 
 
@@ -460,12 +403,12 @@ main {
         max-width: 100%;
         padding: 10px;
     }
-    
+
     #upload-form {
         gap: 10px;
     }
 
-    .upload-button, 
+    .upload-button,
     .upload-section input[type="file"] {
         font-size: 1em;
         padding: 8px 10px;
@@ -499,31 +442,9 @@ main {
     }
 }
 
+
 /* Мобильная версия: уменьшение размера шрифта, выравнивание элементов */
 @media (max-width: 768px) {
-    .top-nav {
-        flex-direction: column; /* Меню становится вертикальным */
-        align-items: flex-start;
-        padding: 10px 15px;
-    }
-
-    .top-nav .logo {
-        margin-bottom: 10px;
-    }
-
-    .top-nav nav ul {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .top-nav nav ul li {
-        margin: 10px 0;
-    }
-
-    .top-nav nav ul li a {
-        font-size: 1em; /* Уменьшаем шрифт на мобильных */
-    }
-
     /* Левое меню */
     .subjects-menu {
         width: 100%; /* Меню растягивается на всю ширину */
@@ -540,27 +461,7 @@ main {
     .chat-input-container button {
         padding: 10px 15px;
     }
-}
 
-@media (max-width: 480px) {
-    /* Логотип */
-    .top-nav .logo {
-        font-size: 1.5em; /* Уменьшаем логотип на маленьких экранах */
-    }
-
-    /* Стили для меню на мобильных устройствах */
-    .top-nav nav ul {
-        flex-direction: column; /* Меню становится вертикальным */
-        width: 100%; /* Меню растягивается на всю ширину */
-    }
-
-    .top-nav nav ul li {
-        margin: 5px 0; /* Уменьшаем отступы между пунктами */
-    }
-
-    .top-nav nav ul li a {
-        font-size: 1em; /* Уменьшаем шрифт */
-    }
 
     /* Левое меню */
     .subjects-menu {
@@ -598,102 +499,6 @@ main {
 
     .chat-input-container button {
         padding: 10px 15px; /* Уменьшаем размеры кнопки */
-    }
-}
-
-
-
-
-
-/* Стили для бокового меню */
-.sidebar-menu {
-    position: fixed;
-    left: 0; /* Меню изначально за экраном, но сдвигается через transform */
-    top: 60px;
-    width: 250px;
-    height: calc(100% - 60px); /* Высота меню с учётом шапки */
-    background-color: #353550;
-    color: white;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); /* Тень для эффекта объема */
-    transform: translateX(-100%); /* Полностью скрыто за пределами экрана */
-    transition: transform 0.3s ease-in-out; /* Анимация открытия/закрытия */
-    z-index: 900;
-}
-
-/* Когда меню открыто */
-.sidebar-menu.open {
-    transform: translateX(0); /* Показываем меню */
-}
-
-/* Стили для кнопки */
-.menu-toggle {
-    margin-right: 40px; /* Отступ справа */
-    display: inline-block;
-    cursor: pointer;
-    background: linear-gradient(90deg, #ffdf91, #ff9f1c);
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1em;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.3s ease;
-    margin-left: 20px;
-}
-
-/* Кнопка при наведении */
-.menu-toggle:hover {
-    background: linear-gradient(90deg, #ff9f1c, #ffdf91);
-    transform: scale(1.1);
-}
-
-/* Стили для навигации внутри меню */
-.sidebar-menu nav ul {
-    list-style: none;
-    padding: 20px 15px;
-    margin: 0;
-}
-
-.sidebar-menu nav ul li {
-    margin: 15px 0;
-}
-
-.sidebar-menu nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    padding: 10px 15px;
-    display: block;
-    transition: background 0.3s ease, color 0.3s ease;
-    border-radius: 5px;
-}
-
-.sidebar-menu nav ul li a:hover {
-    background: #444;
-    color: #ffdf91;
-}
-
-.sidebar-menu nav ul li a.active {
-    font-weight: bold;
-    background: #555;
-}
-
-/* Адаптивные стили для мобильной версии */
-@media (max-width: 768px) {
-    .menu-toggle {
-        margin-left: 0;
-        margin-top: 10px;
-        width: 100%; /* Растягиваем кнопку на всю ширину */
-        text-align: center;
-    }
-
-    .sidebar-menu {
-        width: 70%; /* Уменьшаем ширину меню на мобильных устройствах */
-    }
-
-    .sidebar-menu nav ul li a {
-        font-size: 16px; /* Немного уменьшаем текст */
     }
 }
 
