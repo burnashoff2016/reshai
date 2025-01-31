@@ -29,6 +29,9 @@ html, body {
     opacity: 0;  /* Начальная прозрачность */
     transform: translateY(20px);  /* Начальная позиция */
     animation: fadeInUp 0.5s ease-out forwards; /* Анимация появления */
+    margin: 0 auto; /* Центрируем по горизонтали */
+    width: 40%; /* Задаем ширину блока (или max-width) */
+    max-width: 50%; /* Ограничиваем максимальную ширину */
 }
 
 /* Анимация появления и движения вверх */
@@ -138,9 +141,11 @@ body.loaded .subjects-menu h3 {
     flex-direction: column;
     align-items: flex-start;
     gap: 5px;
+    width: 60%; /* Устанавливаем фиксированную ширину */
+    max-width: 100%; /* Максимальная ширина */
     height: 100%; /* Задаём фиксированную высоту */
     max-height: 400px; /* Ограничиваем максимальную высоту */
-    background: #24243e;
+    background: #25283e;
     border-radius: 10px;
     padding: 20px;
     overflow-y: auto; /* Позволяем прокрутку только внутри */
@@ -148,6 +153,7 @@ body.loaded .subjects-menu h3 {
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
     color: #e0e0e0;
     box-sizing: border-box; /* Учитываем padding в размере */
+    margin: 0 auto; /* Центрируем по горизонтали */
 }
 
 
@@ -237,14 +243,15 @@ body.loaded .subjects-menu h3 {
 .chat-input-container {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 15px; /* Увеличим расстояние между текстом и кнопкой */
     position: relative;
     padding: 10px 0; /* Убираем дополнительный отступ сверху */
-    top: 180px;
+    top: 22%;
 }
 
 .chat-input-container textarea {
-    flex: 1;
+    width: 50%;
     resize: none;
     padding: 15px;
     border: 2px solid #353550;
@@ -257,6 +264,7 @@ body.loaded .subjects-menu h3 {
     color: #e0e0e0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень */
     transition: border 0.3s, box-shadow 0.3s ease; /* Плавные переходы */
+
 }
 
 .chat-input-container textarea:focus {
@@ -299,6 +307,30 @@ body.loaded .subjects-menu h3 {
 .chat-input-container button:focus {
     outline: none;
     box-shadow: 0 4px 10px rgba(78, 84, 200, 0.5); /* Тень при фокусе */
+}
+
+.upload-trigger {
+    background-color: #4e54c8; /* Основной цвет фона кнопки */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;              /* Размер кнопки */
+    height: 60px;             /* Размер кнопки */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;          /* Размер значка внутри кнопки */
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+}
+
+.upload-trigger:hover {
+    background-color: #8f94fb;
+}
+
+.upload-trigger i {
+    font-size: 30px;
 }
 
 
@@ -472,65 +504,8 @@ upload-section label {
     }
 }
 
-/* Мобильная версия: уменьшение размера шрифта, выравнивание элементов */
-@media (max-width: 768px) {
-    /* Левое меню */
-    .subjects-menu {
-        width: 100%; /* Меню растягивается на всю ширину */
-    }
 
-    /* Окно чата */
-    .chat-container {
-        padding: 10px;
-    }
-}
 
-/* Добавим дополнительные медиазапросы для улучшения читабельности на слабых экранах */
-@media (max-width: 480px) {
-    .chat-input-container button {
-        padding: 10px 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    /* Левое меню */
-    .subjects-menu {
-        width: 100%; /* Меню растягивается на всю ширину */
-        padding: 15px; /* Уменьшаем отступы для мобильных */
-    }
-
-    .subjects-menu h3 {
-        font-size: 1.3em; /* Уменьшаем заголовок меню */
-    }
-
-    .subjects-menu ul li {
-        padding: 10px; /* Уменьшаем отступы в элементах меню */
-    }
-
-    /* Окно чата */
-    .chat-container {
-        padding: 10px;
-        height: calc(100vh - 60px); /* Уменьшаем высоту окна чата */
-    }
-
-    .chat-box {
-        max-height: 300px; /* Уменьшаем максимальную высоту чата */
-    }
-
-    .chat-message {
-        font-size: 0.9em; /* Уменьшаем размер шрифта сообщений */
-    }
-
-    /* Поле ввода текста */
-    .chat-input-container textarea {
-        font-size: 1em; /* Уменьшаем размер шрифта в поле ввода */
-        height: 80px; /* Уменьшаем высоту текстового поля */
-    }
-
-    .chat-input-container button {
-        padding: 10px 15px; /* Уменьшаем размеры кнопки */
-    }
-}
 
 /* Выход */
 form button.btn-custom {
@@ -551,3 +526,160 @@ form button.btn-custom:hover {
     color: #ffdf91;
 }
 
+
+#upload-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Чтобы окно всегда было поверх других элементов */
+    background: #353550; /* Фон для модального окна */
+    padding: 20px; /* Отступы внутри окна */
+    border-radius: 12px; /* Скругленные углы */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Тень */
+    width: 40%; /* Ширина модального окна */
+    max-width: 90%; /* Максимальная ширина для адаптивности */
+    height: 40%;
+    --bs-modal-bg: rgb(255, 255, 255); /* Установите цвет фона */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+
+.modal.show {
+    display: block; /* Делаем окно видимым */
+    opacity: 1; /* Делаем окно непрозрачным */
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: rgb(58, 162, 82);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.8em;
+    cursor: pointer;
+    color: rgb(171, 34, 34);
+    transition: color 0.3s ease;
+}
+
+.close-modal:hover {
+    color: #ff1a1a;
+}
+
+/* Стиль заголовка */
+h3 {
+    font-size: 1.6em;
+    text-align: center;
+    color: #333;
+}
+
+/* Стиль для поля выбора файла */
+input[type="file"] {
+    background: #f0f0f0;
+    color: #333;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 1em;
+    width: 100%;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+input[type="file"]:hover {
+    background: #e0e0e0;
+    border-color: #aaa;
+}
+
+/* Кнопка загрузки */
+.upload-button {
+    background: #4e54c8; /* Цвет фона для кнопки */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.upload-button:hover {
+    background: #3e45b5;
+    transform: scale(1.05);
+}
+
+.upload-button:active {
+    background: #2d3a8b;
+    transform: scale(1);
+}
+
+/* Анимация для модального окна */
+@keyframes fadeInUp {
+    0% {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Применяем анимацию при открытии модального окна */
+.modal-content {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+
+/* Контейнер для уведомлений */
+#notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+}
+
+/* Стили для каждого уведомления */
+.notification {
+    background-color: #28a745; /* Зеленый цвет для успешной загрузки */
+    color: white;
+    padding: 15px 30px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-size: 1em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateX(100%); /* Сдвиг уведомления за пределы экрана */
+    animation: slideIn 0.5s ease-out forwards, fadeOut 2s 2.5s forwards; /* Анимация появления и исчезновения */
+}
+
+/* Анимация для появления уведомления */
+@keyframes slideIn {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Анимация для исчезновения уведомления */
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}

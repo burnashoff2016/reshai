@@ -65,6 +65,9 @@
 
     <!-- Окно чата -->
     <section class="chat-container">
+
+        <div id="notification-container"></div>
+
   <!-- Левое меню выбора предметов -->
     <aside class="subjects-menu">
         <h3>Выберите предмет</h3>
@@ -80,23 +83,31 @@
         <div id="chat-box" class="chat-box">
             <div class="system-message">Выберите предмет, чтобы начать чат.</div>
         </div>
+
+
         <div class="chat-input-container">
             <textarea id="user-message" placeholder="Введите ваше сообщение..."></textarea>
+
+             <button id="open-upload-modal" class="upload-trigger">
+            <i class="fas fa-upload"></i> <!-- Иконка для загрузки -->
+            </button>
+            
             <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
         </div>
     </section>
 
-    <!-- Загрузка документов -->
-    <section class="upload-section">
-        <div class="resize-handle"></div> <!-- Добавляем зону для перетаскивания -->
-        <form id="upload-form" enctype="multipart/form-data" method="POST">
-            {% csrf_token %}
-            <label for="document" class="upload-label">Загрузите документ:</label>
-            <input type="file" name="document" id="document" accept=".docx" class="file-input">
-            <button type="submit" class="upload-button">Загрузить</button>
-        </form>
-        <div id="document-text"></div>
-    </section>
+
+    <div id="upload-modal" class="modal hidden">
+        <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h3>Загрузите документ</h3>
+                <form id="upload-form" enctype="multipart/form-data" method="POST">
+                    {% csrf_token %}
+                    <input type="file" name="document" id="document" accept=".docx">
+                    <button type="submit" class="upload-button">Загрузить</button>
+                </form>
+        </div>
+    </div>
 </main>
 
 

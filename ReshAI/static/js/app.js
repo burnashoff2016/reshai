@@ -5,6 +5,44 @@ window.addEventListener('load', function() {
     document.body.classList.add('loaded');
 });
 
+const openModal = document.getElementById('open-upload-modal');
+const uploadModal = document.getElementById('upload-modal');
+const closeModal = document.querySelector('.close-modal');
+
+// Открытие модального окна
+openModal.addEventListener('click', () => {
+    uploadModal.classList.add('show');
+});
+
+// Закрытие модального окна
+closeModal.addEventListener('click', () => {
+    uploadModal.classList.remove('show');
+});
+
+// Закрытие окна при клике вне области модального окна
+window.addEventListener('click', (e) => {
+    if (e.target === uploadModal) {
+        uploadModal.classList.remove('show');
+    }
+});
+
+// Функция для создания уведомления
+function showNotification(message) {
+    const notificationContainer = document.getElementById('notification-container');
+
+    // Создаём новый элемент уведомления
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+    notification.textContent = message;
+
+    // Добавляем уведомление в контейнер
+    notificationContainer.appendChild(notification);
+
+    // Удаляем уведомление через 3.5 секунды
+    setTimeout(() => {
+        notificationContainer.removeChild(notification);
+    }, 3500);
+}
 
 function selectSubject(subject) {
     selectedSubject = subject; // Обновляем выбранный предмет
@@ -38,32 +76,6 @@ function selectSubject(subject) {
     let isResizing = false;
 
 
-    // Функция для обработки изменения размера
-    function handleResize(e) {
-        if (isResizing) {
-            const newWidth = e.clientX - uploadSection.getBoundingClientRect().left;
-            if (newWidth > 250) { // Минимальная ширина
-                uploadSection.style.width = `${newWidth}px`;
-            }
-        }
-    }
-
-    // Остановка перетаскивания
-    function stopResize() {
-        isResizing = false;
-        document.body.style.cursor = 'default';
-        document.removeEventListener('mousemove', handleResize);
-        document.removeEventListener('mouseup', stopResize);
-    }
-
-    // Начало перетаскивания
-    resizeHandle.addEventListener('mousedown', (e) => {
-        isResizing = true;
-        document.body.style.cursor = 'ew-resize';
-        e.preventDefault();
-        document.addEventListener('mousemove', handleResize);
-        document.addEventListener('mouseup', stopResize);
-    });
 
     function sendMessage() {
         const message = document.getElementById("user-message").value.trim();
@@ -185,6 +197,10 @@ function selectSubject(subject) {
         })
         .then(response => response.json())
         .then(data => {
+        const uploadModal = document.getElementById('upload-modal');
+            uploadModal.classList.remove('show');
+            uploadModal.classList.add('hidden'); // Если нужно добавить скрытие через 'hidden'
+            showNotification('Документ успешно загружен!');
             if (data.extracted_text) {
                 const documentTextDiv = document.getElementById('document-text');
                 documentTextDiv.textContent = data.extracted_text;
