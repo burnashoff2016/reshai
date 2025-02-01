@@ -43,7 +43,6 @@ document.getElementById('upload-form').addEventListener('submit', async function
     }
 });
 
-document.addEventListener("DOMContentLoaded", function () {
     const menuToggle = document.getElementById("menu-toggle");
     const sidebarMenu = document.getElementById("sidebar-menu");
 
@@ -89,15 +88,24 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function selectSubject(subject) {
-        selectedSubject = subject;
+        selectedSubject = subject; // Обновляем выбранный предмет
+    
         const chatBox = document.getElementById("chat-box");
-        chatBox.innerHTML = `<div class="system-message">Вы выбрали предмет: ${subject}</div>`;
+        chatBox.innerHTML = ''; // Очищаем текущее содержимое chat-box
+    
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('system-message');
+        messageDiv.textContent = `Вы выбрали предмет: ${subject}`;
+        chatBox.appendChild(messageDiv);
+    
         const allSubjects = document.querySelectorAll('.subjects-menu ul li');
         allSubjects.forEach(li => li.classList.remove('selected'));
-        const selectedLi = document.querySelector(`#subject-${subject.toLowerCase()}`);
-        if (selectedLi) {
-            selectedLi.classList.add('selected');
-        }
+    
+        allSubjects.forEach(li => {
+            if (li.textContent.trim() === subject) {
+                li.classList.add('selected');  // Добавляем класс для выбранного предмета
+            }
+        });
     }
 
     function sendMessage() {
@@ -202,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     console.log('app.js loaded');
-});
+
 
 // Добавляем обработчик события на поле ввода
 document.addEventListener('DOMContentLoaded', () => {

@@ -55,74 +55,112 @@ main {
     overflow-y: auto;
 }
 
-/* Левое меню выбора предметов */
+/* Левое меню выбора предметов в стиле Glassmorphism */
 .subjects-menu {
     width: 100%;
-    overflow-x: auto; /* Включаем горизонтальную прокрутку */
+    overflow-x: auto;
     padding: 20px 0;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    /* background: rgba(255, 255, 255, 0.1); */ /* Полупрозрачный фон */
+    backdrop-filter: blur(15px); /* Эффект размытия */
+    border-radius: 20px;
+    /* border: 1px solid rgba(255, 255, 255, 0.3); */ /* Легкая граница */
+    padding: 20px;
+    /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); */ /* Глубокая тень */
+    margin-bottom: 20px;
 }
 
 .subjects-menu h3 {
-    visibility: hidden; /* Скрываем текст до загрузки */
     opacity: 0;
-    margin-top: 0;
-    padding-bottom: 15px;
-    font-size: 1.5em;
-    color: #ffdf91;
-    font-weight: 600;
+    margin: 0 0 15px;
+    font-size: 1.6em;
+    color: #ffffff;
+    font-weight: 700;
     font-family: 'Roboto', sans-serif;
     text-align: center;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+    transform: translateY(-10px);
+    margin-bottom: 20px;
 }
 
 body.loaded .subjects-menu h3 {
-    visibility: visible; /* Делаем текст видимым */
-    opacity: 1; /* Плавно показываем */
+    opacity: 1;
+    transform: translateY(0);
 }
 
-
-/* Стили для списка с горизонтальной прокруткой */
 .subjects-menu ul {
-    display: flex; /* Размещаем элементы списка в ряд */
+    display: flex;
     list-style: none;
     padding: 0;
     margin: 0;
+    gap: 15px;
+    flex-wrap: wrap; /* Перенос элементов на новую строку */
+    justify-content: center;
 }
 
 .subjects-menu ul li {
-    padding: 12px 25px; /* Добавляем отступы для удобства */
-    margin-right: 10px; /* Отступ между элементами */
-    background: #353550;
-    border-radius: 5px;
+    padding: 12px 25px;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    border-radius: 15px;
     cursor: pointer;
-    color: #e0e0e0;
+    color: #ffffff;
     text-align: center;
-    transition: transform 0.3s, background 0.3s, color 0.3s;
-    font-weight: 500;
+    transition: all 0.4s ease;
+    font-weight: 600;
     font-family: 'Roboto', sans-serif;
-    font-size: 1.2em;
+    font-size: 1em;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
 }
 
-/* При наведении */
+.subjects-menu ul li::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent 70%);
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+    opacity: 0;
+}
+
+.subjects-menu ul li:hover::before {
+    top: -20%;
+    left: -20%;
+    opacity: 1;
+}
+
 .subjects-menu ul li:hover {
-    background: #ffdf91;
-    color: #24243e;
-    transform: scale(1.05);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* Стили для выбранного элемента */
 .subjects-menu ul li.selected {
-    background: #ffdf91;
-    color: #24243e;
-    font-weight: bold;
-    transform: scale(1.05);
-    transition: transform 0.3s, background 0.3s;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    color: #2c2c54;
+    transform: scale(1.08);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
+
+.subjects-menu ul li .subject-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
+}
+
+
 
 
 /* Окно чата */
@@ -193,17 +231,118 @@ body.loaded .subjects-menu h3 {
     align-items: center;
 }
 
-/* Выделение для бота */
+/* Стиль для сообщений от бота */
 .chat-message.bot {
     text-align: left;
     background: #353550;
     color: #ffffff;
-    padding: 10px;
-    margin: 10px 0;
-    border-right: 4px solid #ffdf91;
-    border-radius: 5px;
+    padding: 15px;
+    margin: 15px 0;
+    border-right: 4px solid #ffffff;
+    border-radius: 10px;
     flex-shrink: 0;
+    max-width: 80%;
+    word-wrap: break-word; /* Длинные слова или ссылки будут переноситься */
+    transition: all 0.3s ease-in-out; /* Плавный переход при появлении */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для улучшения визуального восприятия */
 }
+
+.chat-message.bot p {
+    line-height: 1.6; /* Меньшее расстояние между строками */
+    margin-bottom: 10px; /* Отступ между абзацами */
+}
+
+/* Для списков внутри сообщений */
+.chat-message.bot ul {
+    margin: 10px 0;
+    padding-left: 20px;
+    list-style: decimal;
+}
+
+.chat-message.bot ul li {
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.chat-message.bot ul li:hover {
+    color: #ffdf91; /* Подсветка элемента списка при наведении */
+}
+
+.chat-message.bot h1:hover,
+.chat-message.bot h2:hover,
+.chat-message.bot h1:hover {
+    color: #ffdf91; /* Подсветка элемента списка при наведении */
+}
+
+/* Стиль для заголовков */
+.chat-message.bot h1,
+.chat-message.bot h2,
+.chat-message.bot h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+/* Жирный текст */
+.chat-message.bot strong {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* Для ссылок внутри сообщений */
+.chat-message.bot a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.chat-message.bot a:hover {
+    color: #ffdf91; /* Изменение цвета при наведении на ссылку */
+}
+
+/* Анимация появления сообщений */
+.chat-message.bot {
+    opacity: 0;
+    animation: fadeIn 1s forwards; /* Плавное появление */
+}
+
+/* Анимация для появления */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Удаляем отступы для чата */
+.chat-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Для ввода сообщений */
+.chat-input {
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 5px;
+    border: 1px solid #353550;
+    background-color: #fff;
+    color: #353550;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.chat-input:focus {
+    border-color: #ffdf91; /* Подсветка поля ввода при фокусе */
+    outline: none;
+}
+
 
 /* Стиль для анимации "печатает" */
 .chat-message.typing-indicator::after {
@@ -215,16 +354,6 @@ body.loaded .subjects-menu h3 {
     0% { content: " ."; }
     50% { content: " . ."; }
     100% { content: " . . ."; }
-}
-
-.chat-message.bot ul {
-    margin: 10px 0;
-    padding-left: 20px;
-    list-style: decimal;
-}
-
-.chat-message.bot ul li {
-    margin-bottom: 10px;
 }
 
 /* Анимация для бота*/
@@ -247,7 +376,7 @@ body.loaded .subjects-menu h3 {
     gap: 15px; /* Увеличим расстояние между текстом и кнопкой */
     position: relative;
     padding: 10px 0; /* Убираем дополнительный отступ сверху */
-    top: 22%;
+    top: 20%;
 }
 
 .chat-input-container textarea {
@@ -649,7 +778,6 @@ input[type="file"]:hover {
 
 /* Стили для каждого уведомления */
 .notification {
-    background-color: #28a745; /* Зеленый цвет для успешной загрузки */
     color: white;
     padding: 15px 30px;
     margin-bottom: 10px;

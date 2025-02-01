@@ -3,7 +3,7 @@ from urllib import request
 from venv import logger
 
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, StreamingHttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import default_storage
@@ -77,20 +77,25 @@ def get_chatgpt_response(question):
         response = client.chat.completions.create(
             model="gpt-4o-mini",  # Используем модель, доступную для вашего ключа
             messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "system", "content": "Выводи ответ для markdown."},
                 {"role": "user", "content": question},
             ],
+            stream=True,
             max_tokens=1000,
             temperature=0.7
         )
 
-        # Правильный доступ к данным из объекта response
-        answer = response.choices[0].message.content
-        return answer
+        # Генератор для потоковой передачи данных
+        def stream_generator():
+            for chunk in response:
+                if chunk.choices[0].delta.content:
+                    yield chunk.choices[0].delta.content
+
+        return StreamingHttpResponse(stream_generator(), content_type='text/plain')
 
     except Exception as e:
         print(f"Ошибка при запросе к OpenAI API: {e}")
-        return "Произошла ошибка при обращении к API OpenAI."
+        return StreamingHttpResponse(f"Ошибка сервера: {e}", content_type='text/plain')
 
 def get_perplexity_response(question):
     api_url = "https://api.perplexity.ai/chat/completions"
@@ -170,7 +175,7 @@ def chatbot_view(request):
 
             # Получение ответа от Perplexity API
             bot_response = get_chatgpt_response(question)
-            return JsonResponse({'reply': bot_response}, status=200)
+            return bot_response
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Некорректные данные'}, status=400)
     return render(request, 'chatapp/chatbot.html')

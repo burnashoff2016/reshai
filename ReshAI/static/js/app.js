@@ -27,13 +27,19 @@ window.addEventListener('click', (e) => {
 });
 
 // Функция для создания уведомления
-function showNotification(message) {
+function showNotification(message,type = 'success') {
     const notificationContainer = document.getElementById('notification-container');
 
     // Создаём новый элемент уведомления
     const notification = document.createElement('div');
     notification.classList.add('notification');
     notification.textContent = message;
+
+    if (type == 'error') {
+        notification.style.backgroundColor = '#dc3545';
+    } else {
+        notification.style.backgroundColor = '#28a745';
+    }
 
     // Добавляем уведомление в контейнер
     notificationContainer.appendChild(notification);
@@ -58,10 +64,11 @@ function selectSubject(subject) {
     const allSubjects = document.querySelectorAll('.subjects-menu ul li');
     allSubjects.forEach(li => li.classList.remove('selected'));
 
-    const selectedLi = document.querySelector(`#subject-${subject.toLowerCase()}`);
-    if (selectedLi) {
-        selectedLi.classList.add('selected');
-    }
+    allSubjects.forEach(li => {
+        if (li.textContent.trim() === subject) {
+            li.classList.add('selected');  // Добавляем класс для выбранного предмета
+        }
+    });
 }
 
 
@@ -81,12 +88,12 @@ function selectSubject(subject) {
         const message = document.getElementById("user-message").value.trim();
 
         if (!selectedSubject) {
-            alert("Пожалуйста, выберите предмет перед отправкой сообщения!");
+            showNotification('Пожалуйста, выберите предмет перед отправкой сообщения!', 'error');
             return;
         }
 
         if (!message) {
-            alert("Сообщение не может быть пустым!");
+            showNotification('Сообщение не может быть пустым!', 'error');
             return;
         }
 
@@ -119,18 +126,57 @@ function selectSubject(subject) {
     },
             body: JSON.stringify({ subject: selectedSubject, message }),
         })
-        .then(response => response.json())
-        .then(data => {
+        .then(response => {
+            if (!response.body) {
+                throw new Error("Ответ не содержит тела.");
+            }
+    
             // Убираем индикатор "печатает..."
             typingIndicator.remove();
-
-           // Создаём новое сообщение от бота и анимируем его
+    
+            scrollToBottom();
+    
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder("utf-8");
+                
+            // Получаем элемент, куда будем анимировать текст
             const botMessageDiv = document.createElement('div');
             botMessageDiv.className = "chat-message bot";
             chatBox.appendChild(botMessageDiv);
-            animateTypingWithCleanText(botMessageDiv, data.reply);
 
-            scrollToBottom();
+            let accumulatedText = ''; // Переменная для накопления текста
+            let htmlContent = ''; // Переменная для накопленного HTML контента
+    
+            const processStream = ({ done, value }) => {
+                if (done) {
+                    // Когда все данные получены, обрабатываем их
+                    htmlContent = marked.parse(accumulatedText);
+                    botMessageDiv.innerHTML = htmlContent;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                    return;
+                }
+        
+                // Декодируем фрагмент данных
+                const chunk = decoder.decode(value, { stream: true });
+                console.log("Полученный фрагмент:", chunk);
+        
+                // Накопление текста
+                accumulatedText += chunk;
+        
+                // Преобразуем накопленный текст в HTML с Markdown
+                htmlContent = marked.parse(accumulatedText);
+        
+                // Выводим текст с применением Markdown
+                botMessageDiv.innerHTML = htmlContent;
+        
+                // Прокручиваем чат вниз
+                chatBox.scrollTop = chatBox.scrollHeight;
+        
+                // Читаем следующий блок данных
+                reader.read().then(processStream);
+            };
+    
+            reader.read().then(processStream);
         })
         .catch(error => {
             console.error("Ошибка:", error);
@@ -181,7 +227,6 @@ function selectSubject(subject) {
 }
 
 
-
     // Отправка формы загрузки документов
     document.getElementById('upload-form').addEventListener('submit', function (event) {
         event.preventDefault();
@@ -200,7 +245,7 @@ function selectSubject(subject) {
         const uploadModal = document.getElementById('upload-modal');
             uploadModal.classList.remove('show');
             uploadModal.classList.add('hidden'); // Если нужно добавить скрытие через 'hidden'
-            showNotification('Документ успешно загружен!');
+            showNotification('Документ успешно загружен!', 'success');
             if (data.extracted_text) {
                 const documentTextDiv = document.getElementById('document-text');
                 documentTextDiv.textContent = data.extracted_text;
