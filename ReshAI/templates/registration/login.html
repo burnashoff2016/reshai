@@ -36,9 +36,8 @@
   </label>
   <input type="password" name="password" id="password" placeholder="Пароль">
 
-  <!-- Кнопка для переключения видимости пароля -->
   <span class="eye-icon" id="toggle-password">
-    <i class="fas fa-eye"></i> <!-- Иконка глазика -->
+    <i class="fas fa-eye"></i>
   </span>
 
   {% if form.password.errors %}
@@ -46,7 +45,6 @@
   {% endif %}
 </div>
 
-<!-- Подключение скрипта -->
 <script>
   const togglePassword = document.getElementById('toggle-password');
   const passwordField = document.getElementById('password');
@@ -61,7 +59,6 @@
   });
 </script>
 
-<!-- Стили для выравнивания глазика в правой части поля -->
 <style>
 
   .eye-icon {
@@ -74,8 +71,6 @@
   }
 
 </style>
-
-
 
   <div class="submit-button">
     <button type="submit">Войти</button>

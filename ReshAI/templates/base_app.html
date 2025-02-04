@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/favicon-96x96.png' %}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}" />
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}" />
+    <meta name="apple-mobile-web-app-title" content="ReshAI" />
+    <link rel="manifest" href="{% static 'images/site.webmanifest' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@1.8.4"></script>
+    <title>ReshAI</title>
+</head>
+<body>
+    <main>
+            <div id="sidebar" class="col-md-3 d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
+                <a href="/" class="d-flex align-items-center mb-3 text-white text-decoration-none">
+                    <img src="/media/images/image_bar.png" alt="ReshAI Logo" width="32" height="32" class="me-2">
+                    <span class="fs-4">ReshAI</span>
+                </a>
+                <hr>
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item">
+                        <a href="{% url 'chatbot' %}" class="nav-link {% if request.path == '/' %}active{% endif %} text-white">
+                            <i class="fas fa-file-alt me-2"></i> Файлы
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'page_one'%}" class="nav-link {% if request.path == '/page_one/' %}active{% endif %} text-white">
+                            <i class="fas fa-photo-video me-2"></i> Медиа
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'page_two' %}" class="nav-link {% if request.path == '/page_two/' %}active{% endif %} text-white">
+                            <i class="fas fa-comments me-2"></i> Чат
+                        </a>
+                    </li>
+                </ul>
+
+               <ul class="nav nav-pills flex-column mb-auto" id="chat-list">
+                    {% for chat in user.chats.all %}
+                        <li class="chat-item text-white" data-chat-id="{{ chat.id }}">
+                            <i class="fas fa-comments me-2"></i> {{ chat.subject|default:"Без названия" }}
+                        </li>
+                    {% empty %}
+                        <li class="text-white">Чатов пока нет</li>
+                    {% endfor %}
+               </ul>
+
+                <button class="btn btn-outline-light mt-3" id="new-chat-btn">+ Новый чат</button>
+
+                <hr>
+
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="/media/images/users.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                        <strong>{{ user.username }}</strong>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                        <li><a class="dropdown-item" href="#">Настройки</a></li>
+                        <li><a class="dropdown-item" href="{% url 'profile' %}">Профиль</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form action="{% url 'logout' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-custom btn-lg">Выход</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                {% block content %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </main>
+
+    {% block modals %}{% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="{% static 'js/app.js' %}" defer></script>
+</body>
+</html>

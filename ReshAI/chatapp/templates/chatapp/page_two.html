@@ -16,7 +16,7 @@
     <title>ReshAI</title>
 </head>
 <body>
-<!-- Верхнее меню -->
+
 <header class="top-nav">
     <button class="menu-toggle" id="menu-toggle">☰</button>
     <div class="logo">ReshAI</div>
@@ -45,13 +45,13 @@
     {% endif %}
 </header>
 
-<!-- Основной контент -->
+
 <main>
-    <!-- Боковое меню -->
+
     <div id="sidebar" class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
         <a href="/" class="d-flex align-items-center mb-3 text-white text-decoration-none">
                 <img src="/media/images/image_bar.png" alt="ReshAI Logo" width="32" height="32" class="me-2">
-<!--            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>-->
+
             <span class="fs-4">ReshAI</span>
         </a>
         <hr>
@@ -100,7 +100,7 @@
         </ul>
     </nav>
 </aside>
-   <!-- Конструктор промта -->
+
 <div class="prompt-builder">
     <label for="question-count">Укажите количество вопросов:</label>
     <input type="number" id="question-count" name="question_count" placeholder="Введите количество вопросов" required>
@@ -131,7 +131,6 @@
     <button type="submit" id="generate-test">Составить тест</button>
 </div>
 
-    <!-- Окно чата -->
     <section class="chat-container">
         <div id="chat-box" class="chat-box">
             <div class="system-message">Введи данные в конструктор!</div>

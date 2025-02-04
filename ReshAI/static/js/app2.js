@@ -3,9 +3,9 @@ window.addEventListener('load', function() {
 });
 
 document.getElementById('upload-form').addEventListener('submit', async function (event) {
-    event.preventDefault(); // Отменяем стандартное поведение формы
+    event.preventDefault();
 
-    const fileInput = document.getElementById('media-file'); // Используем правильный id
+    const fileInput = document.getElementById('media-file');
     const formData = new FormData();
 
     if (!fileInput.files[0]) {
@@ -13,7 +13,7 @@ document.getElementById('upload-form').addEventListener('submit', async function
         return;
     }
 
-    formData.append('media-file', fileInput.files[0]); // Используем правильное имя поля для файла
+    formData.append('media-file', fileInput.files[0]);
 
     try {
         const response = await fetch('/page_one/', {
@@ -27,7 +27,6 @@ document.getElementById('upload-form').addEventListener('submit', async function
         const data = await response.json();
 
         if (data.success) {
-            // Если транскрипция успешна, выводим её
             const transcriptionOutput = document.querySelector('.transcribed-output');
             if (transcriptionOutput) {
                 transcriptionOutput.textContent = data.transcription;
@@ -46,9 +45,8 @@ document.getElementById('upload-form').addEventListener('submit', async function
     const menuToggle = document.getElementById("menu-toggle");
     const sidebarMenu = document.getElementById("sidebar-menu");
 
-    // Обработчик клика по кнопке меню
     menuToggle.addEventListener("click", function() {
-        sidebarMenu.classList.toggle("open"); // Переключаем класс для открытия/закрытия меню
+        sidebarMenu.classList.toggle("open");
     });
 
      window.selectSubject = selectSubject;
@@ -59,18 +57,15 @@ document.getElementById('upload-form').addEventListener('submit', async function
     const uploadSection = document.querySelector('.upload-section');
     let isResizing = false;
 
-
-    // Функция для обработки изменения размера
     function handleResize(e) {
         if (isResizing) {
             const newWidth = e.clientX - uploadSection.getBoundingClientRect().left;
-            if (newWidth > 250) { // Минимальная ширина
+            if (newWidth > 250) {
                 uploadSection.style.width = `${newWidth}px`;
             }
         }
     }
 
-    // Остановка перетаскивания
     function stopResize() {
         isResizing = false;
         document.body.style.cursor = 'default';
@@ -78,7 +73,6 @@ document.getElementById('upload-form').addEventListener('submit', async function
         document.removeEventListener('mouseup', stopResize);
     }
 
-    // Начало перетаскивания
     resizeHandle.addEventListener('mousedown', (e) => {
         isResizing = true;
         document.body.style.cursor = 'ew-resize';
@@ -88,10 +82,10 @@ document.getElementById('upload-form').addEventListener('submit', async function
     });
 
     function selectSubject(subject) {
-        selectedSubject = subject; // Обновляем выбранный предмет
+        selectedSubject = subject;
     
         const chatBox = document.getElementById("chat-box");
-        chatBox.innerHTML = ''; // Очищаем текущее содержимое chat-box
+        chatBox.innerHTML = '';
     
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('system-message');
@@ -103,7 +97,7 @@ document.getElementById('upload-form').addEventListener('submit', async function
     
         allSubjects.forEach(li => {
             if (li.textContent.trim() === subject) {
-                li.classList.add('selected');  // Добавляем класс для выбранного предмета
+                li.classList.add('selected');
             }
         });
     }
@@ -121,11 +115,8 @@ document.getElementById('upload-form').addEventListener('submit', async function
             return;
         }
 
-
-
         const chatBox = document.getElementById("chat-box");
 
-        /// Отправляем сообщение пользователя в чат
         const userMessageDiv = document.createElement('div');
         userMessageDiv.className = "chat-message user";
         userMessageDiv.innerHTML = `<strong>Вы:</strong> ${message}`;
@@ -134,7 +125,6 @@ document.getElementById('upload-form').addEventListener('submit', async function
         scrollToBottom();
         document.getElementById("user-message").value = "";
 
-         // Добавляем индикатор "печатает..."
         const typingIndicator = document.createElement('div');
         typingIndicator.className = "chat-message bot typing-indicator";
         typingIndicator.innerHTML = "<strong>Бот:</strong><span style='margin-left: 5px;'>Печатает </span>";
@@ -149,10 +139,8 @@ document.getElementById('upload-form').addEventListener('submit', async function
         })
         .then(response => response.json())
         .then(data => {
-            // Убираем индикатор "печатает..."
             typingIndicator.remove();
 
-           // Создаём новое сообщение от бота и анимируем его
             const botMessageDiv = document.createElement('div');
             botMessageDiv.className = "chat-message bot";
             chatBox.appendChild(botMessageDiv);
@@ -211,17 +199,14 @@ document.getElementById('upload-form').addEventListener('submit', async function
 
     console.log('app.js loaded');
 
-
-// Добавляем обработчик события на поле ввода
-document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
     const inputField = document.getElementById('user-message');
 
     if (inputField) {
         inputField.addEventListener('keydown', function (event) {
-            // Проверяем, что нажата клавиша Enter и не удерживается Shift
             if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault(); // Предотвращаем добавление новой строки
-                sendMessage(); // Вызываем функцию отправки сообщения
+                event.preventDefault();
+                sendMessage();
             }
         });
     } else {

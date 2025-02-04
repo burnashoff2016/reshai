@@ -52,10 +52,10 @@ h2 {
 .input-group i {
   position: absolute;
   top: 50%;
-  left: 12px; /* Центрируем иконку в поле */
+  left: 12px;
   transform: translateY(-50%);
-  font-size: 18px; /* Размер иконки */
-  color: #7f8084; /* Цвет иконки */
+  font-size: 18px;
+  color: #7f8084;
 }
 
 .submit-button {

@@ -2,9 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const menuToggle = document.getElementById("menu-toggle");
     const sidebarMenu = document.getElementById("sidebar-menu");
 
-    // Обработчик клика по кнопке меню
     menuToggle.addEventListener("click", function() {
-        sidebarMenu.classList.toggle("open"); // Переключаем класс для открытия/закрытия меню
+        sidebarMenu.classList.toggle("open");
     });
 
     window.sendMessage = sendMessage;
@@ -14,17 +13,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const uploadSection = document.querySelector('.upload-section');
     let isResizing = false;
 
-    // Функция для обработки изменения размера
     function handleResize(e) {
         if (isResizing) {
             const newWidth = e.clientX - uploadSection.getBoundingClientRect().left;
-            if (newWidth > 250) { // Минимальная ширина
+            if (newWidth > 250) {
                 uploadSection.style.width = `${newWidth}px`;
             }
         }
     }
 
-    // Получаем CSRF токен из cookie
     function getCSRFToken() {
         let csrfToken = null;
         const cookies = document.cookie.split(';');
@@ -54,7 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const chatBox = document.getElementById("chat-box");
 
-    // Отправляем сообщение пользователя в чат
     const userMessageDiv = document.createElement('div');
     userMessageDiv.className = "chat-message user";
     userMessageDiv.innerHTML = `<strong>Вы:</strong> Создать тест с ${questionCount} вопросами по теме "${topic}" с ключевыми словами: ${keywords}, сложность: ${difficulty}, количество вопросов для одиночного выбора: ${singleChoiceCount}, для множественного выбора: ${multipleChoiceCount}, для теста с пропусками: ${gapFillCount}.`;
@@ -62,7 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
     chatBox.scrollTop = chatBox.scrollHeight;
     scrollToBottom();
 
-    // Добавляем индикатор "печатает..."
     const typingIndicator = document.createElement('div');
     typingIndicator.className = "chat-message bot typing-indicator";
     typingIndicator.innerHTML = "<strong>ИИ:</strong><span style='margin-left: 5px;'>Печатает </span>";
@@ -70,19 +65,18 @@ document.addEventListener("DOMContentLoaded", function () {
     chatBox.scrollTop = chatBox.scrollHeight;
     scrollToBottom();
 
-    // Получаем CSRF токен
-    const csrfToken = getCSRFToken();  // Убедитесь, что переменная csrfToken определена здесь
+    const csrfToken = getCSRFToken();
 
     if (!csrfToken) {
         console.error("CSRF токен не найден!");
-        return;  // Если токен не найден, прерываем выполнение
+        return;
     }
 
     fetch("/page_two/", {
     method: "POST",
     headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": csrfToken // Это правильный способ передать токен
+        "X-CSRFToken": csrfToken
     },
     body: JSON.stringify({
         question_count: questionCount,
@@ -96,12 +90,9 @@ document.addEventListener("DOMContentLoaded", function () {
 })
     .then(response => response.json())
     .then(data => {
-        // Убираем индикатор "печатает..."
         typingIndicator.remove();
 
-        // Проверяем, есть ли текст в ответе
         if (data && data.reply) {
-            // Создаём новое сообщение от бота и анимируем его
             const botMessageDiv = document.createElement('div');
             botMessageDiv.className = "chat-message bot";
             chatBox.appendChild(botMessageDiv);
@@ -121,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function animateTypingWithCleanText(element, text) {
     if (!text) {
         console.error("Нет текста для анимации.");
-        return; // Если текста нет, не выполняем анимацию
+        return;
     }
 
     const cleanedText = text.replace(/###|\r|\n/g, '\n').trim();
@@ -168,12 +159,11 @@ function animateTypingWithCleanText(element, text) {
 
     console.log('app3.js loaded');
 
-    // Обработчик для кнопки "Составить тест"
     const generateTestButton = document.getElementById("generate-test");
     if (generateTestButton) {
         generateTestButton.addEventListener("click", function(event) {
-            event.preventDefault(); // Предотвращаем стандартное поведение кнопки (если это форма)
-            sendMessage(); // Вызываем функцию отправки сообщения
+            event.preventDefault();
+            sendMessage();
         });
     } else {
         console.error("Кнопка 'Составить тест' не найдена.");

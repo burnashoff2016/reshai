@@ -7,10 +7,7 @@ User = get_user_model()
 
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
-    """Создаём или обновляем профиль пользователя."""
     if created:
-        # Если пользователь только что создан, создаём профиль
         UserProfile.objects.create(user=instance)
     else:
-        # Если пользователь уже существует, сохраняем профиль (если что-то изменилось)
         instance.profile.save()

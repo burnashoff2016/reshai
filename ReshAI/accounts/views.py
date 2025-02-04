@@ -15,12 +15,11 @@ class SignUpView(generic.CreateView):
     template_name = 'registration/signup.html'
 
     def dispatch(self, request, *args, **kwargs):
-        # Блокируем доступ ко View
         return render(request, 'registration/403_signup.html')
 
 class LoginView(FormView):
     form_class = forms.LoginForm
-    template_name = 'registration/login.html'  # Укажите свой путь к шаблону
-    success_url = reverse_lazy('/')  # Или укажите нужный URL для перенаправления после успешного входа
+    template_name = 'registration/login.html'
+    success_url = reverse_lazy('/')
 
 

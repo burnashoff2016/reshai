@@ -1,0 +1,55 @@
+{% extends 'base_app.html' %}
+
+{% block content %}
+<main>
+    <section class="chat-container">
+        <div id="notification-container"></div>
+
+        <aside class="subjects-menu">
+            <h3>Выберите предмет</h3>
+            <ul>
+                <li onclick="selectSubject('Математика')" id="subject-math">
+                    <img src="/media/images/physics.png" alt="Математика" class="subject-logo"> Математика
+                </li>
+                <li onclick="selectSubject('Физика')" id="subject-phy">
+                    <img src="/media/images/physics.png" alt="Физика" class="subject-logo"> Физика
+                </li>
+                <li onclick="selectSubject('История')" id="subject-history">
+                    <img src="/media/images/physics.png" alt="История" class="subject-logo"> История
+                </li>
+                <li onclick="selectSubject('Химия')" id="subject-chemistry">
+                    <img src="/media/images/physics.png" alt="Химия" class="subject-logo"> Химия
+                </li>
+                <li onclick="selectSubject('Биология')" id="subject-biology">
+                    <img src="/media/images/physics.png" alt="Биология" class="subject-logo"> Биология
+                </li>
+            </ul>
+        </aside>
+
+         <div id="chat-box" class="chat-box">
+            <div class="system-message">Выберите предмет, чтобы начать чат.</div>
+        </div>
+
+        <div class="chat-input-container">
+            <textarea id="user-message" placeholder="Введите ваше сообщение..."></textarea>
+            <button id="open-upload-modal" class="upload-trigger"><i class="fas fa-upload"></i></button>
+            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </section>
+</main>
+    {% endblock %}
+
+
+    {% block modals %}
+    <div id="upload-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Загрузите аудио</h3>
+            <form id="upload-form" enctype="multipart/form-data" method="POST">
+                {% csrf_token %}
+                <input type="file" name="document" id="document" accept=".mp3, .mp4">
+                <button type="submit" class="upload-button">Загрузить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

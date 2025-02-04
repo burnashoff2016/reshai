@@ -17,13 +17,10 @@
 </head>
 <body>
 
-<!-- Основной контент -->
 <main>
-    <!-- Боковое меню -->
     <div id="sidebar" class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
         <a href="/" class="d-flex align-items-center mb-3 text-white text-decoration-none">
                 <img src="/media/images/image_bar.png" alt="ReshAI Logo" width="32" height="32" class="me-2">
-<!--            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>-->
             <span class="fs-4">ReshAI</span>
         </a>
         <hr>
@@ -65,10 +62,8 @@
     </div>
     
 
-    <!-- Окно чата -->
     <section class="chat-container">
 
-    <!-- Меню выбора предметов -->
     <aside class="subjects-menu">
         <h3>Выберите предмет</h3>
         <ul>
@@ -89,9 +84,8 @@
         </div>
     </section>
 
-    <!-- Загрузка документов -->
   <section class="upload-section">
-    <div class="resize-handle"></div> <!-- Зона для перетаскивания -->
+    <div class="resize-handle"></div>
     <form id="upload-form" action="/page_one/" enctype="multipart/form-data" method="POST">
         {% csrf_token %}
         <label for="media-file" class="upload-label">Загрузите аудио или видео:</label>
