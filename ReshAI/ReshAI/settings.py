@@ -62,7 +62,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-MAINTENANCE_MODE = True  # True - сайт в режиме тех.работ, False - сайт работает
+MAINTENANCE_MODE = False  # True - сайт в режиме тех.работ, False - сайт работает
 
 
 ROOT_URLCONF = 'ReshAI.urls'
