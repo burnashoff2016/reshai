@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'middleware.maintenance_middleware.MaintenanceModeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -60,6 +61,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+MAINTENANCE_MODE = True  # True - сайт в режиме тех.работ, False - сайт работает
+
 
 ROOT_URLCONF = 'ReshAI.urls'
 TEMPLATES = [
@@ -88,7 +92,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'reshai',  # Имя вашей базы данных
         'USER': 'artem',  # Имя пользователя
-        'PASSWORD': 'Qz754wx04ec95!',  # Пароль server
+        'PASSWORD': 'Qz754wx04ec95',  # Пароль server
         # 'PASSWORD': 'reshai',  # Пароль local
         'HOST': 'localhost',
         'PORT': '5432',

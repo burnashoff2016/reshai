@@ -5,4 +5,10 @@ requests>=2.32.3
 python-dotenv
 json5
 python-docx
-deepgram-sdk
+deepgram-sdk==2.12.0
+psycopg
+psycopg2-binary
+postgresql
+postgresql-contrib
+openai
+Pillow
