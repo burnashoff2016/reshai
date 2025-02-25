@@ -32,6 +32,8 @@ PERPLEXITY_API_KEY = os.environ.get('PERPLEXITY_API_KEY', "")
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
 ALLOWED_HOSTS = [
+    'lvh.me',
+    '.lvh.me',
     "localhost",
     "127.0.0.1",
     "app.resh-ai.ru",
