@@ -12,3 +12,4 @@ postgresql
 postgresql-contrib
 openai
 Pillow
+django-hosts

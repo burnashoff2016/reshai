@@ -7,7 +7,21 @@
 
         <aside class="subjects-menu">
             <h3>Выберите предмет</h3>
-            <ul>
+
+            <div class="d-flex gap-2 justify-content-center py-2"id = "subjects-container">
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Математика')">Математика</button>
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Физика')">Физика</button>
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'История')">История</button>
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Химия')">Химия</button>
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Биология')">Биология</button>
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Социология')">Социология</button>
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Экономика')">Экономика</button>
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Астрономия')">Астрономия</button>
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Философия')">Философия</button>
+            </div>
+
+
+            {% comment %} <ul>
                 <li onclick="selectSubject('Математика')" id="subject-math">
                     <img src="/media/images/physics.png" alt="Математика" class="subject-logo"> Математика
                 </li>
@@ -23,11 +37,11 @@
                 <li onclick="selectSubject('Биология')" id="subject-biology">
                     <img src="/media/images/physics.png" alt="Биология" class="subject-logo"> Биология
                 </li>
-            </ul>
+            </ul> {% endcomment %}
         </aside>
 
         <input type="hidden" id="chat-id" value="{{ chat.id|default:'' }}">
-
+        <div id="global-menu-container"></div>
          <div id="chat-box" class="chat-box">
             <div class="system-message">Выберите предмет, чтобы начать чат.</div>
         </div>

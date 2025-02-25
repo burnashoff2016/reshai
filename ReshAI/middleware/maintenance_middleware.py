@@ -7,5 +7,5 @@ class MaintenanceModeMiddleware:
 
     def __call__(self, request):
         if getattr(settings, "MAINTENANCE_MODE", False):  # Проверяем настройку
-            return render(request, 'registration/404_error.html', status=503)
+            return render(request, 'registration/403_tech.html', status=503)
         return self.get_response(request)

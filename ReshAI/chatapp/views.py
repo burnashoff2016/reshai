@@ -17,6 +17,8 @@ from openai import OpenAI
 from accounts.forms import UserProfileForm
 from .models import Chat, Message
 import openai
+from django.views.decorators.http import require_POST
+
 
 load_dotenv()
 
@@ -353,3 +355,15 @@ def get_chat_history(request, chat_id):
         return JsonResponse({"messages": message_list})
     except Chat.DoesNotExist:
         return JsonResponse({"error": "Чат не найден"}, status=404)
+
+
+@login_required
+@require_POST
+def delete_chat(request, chat_id):
+    # Логика удаления чата, проверка прав доступа и т.д.
+    try:
+        chat = Chat.objects.get(id=chat_id, user=request.user)
+        chat.delete()
+        return JsonResponse({'success': True})
+    except Chat.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Чат не найден'}, status=404)

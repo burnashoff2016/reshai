@@ -23,10 +23,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 chatBox.innerHTML = "";
 
                 const newChatItem = document.createElement("li");
-                newChatItem.classList.add("chat-item", "text-white");
+                newChatItem.classList.add("chat-item", "text-white", "d-flex", "justify-content-between", "align-items-center");
                 newChatItem.dataset.chatId = data.chat_id;
-                newChatItem.innerHTML = `<i class="fas fa-comments me-2"></i> ${data.subject}`;
+                newChatItem.innerHTML = `
+                    <div>
+                        <i class="fas fa-comments me-2"></i> ${data.subject || "Без названия"}
+                    </div>
+                    <div class="dropdown">
+                                        <button class="btn btn-link text-white p-0" onclick="toggleChatMenu(event, '{{ chat.id }}')">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                `;
                 chatList.prepend(newChatItem);
+                // Инициализируем dropdown для нового чата
+                let newDropdown = newChatItem.querySelector('.dropdown-toggle');
+                new bootstrap.Dropdown(newDropdown);
             }
         })
         .catch(error => console.error("Ошибка создания чата:", error));
@@ -99,7 +111,134 @@ function showNotification(message,type = 'success') {
     }, 3500);
 }
 
-function selectSubject(subject) {
+function toggleChatMenu(event, chatId) {
+    const globalMenu = document.getElementById('global-menu-container');
+    
+    // Если меню уже открыто для этого чата — закрыть его
+    if (globalMenu.dataset.chatId === chatId && !globalMenu.classList.contains('hidden')) {
+        globalMenu.classList.add('hidden');
+        return;
+    }
+    
+    // Задаём ID чата
+    globalMenu.dataset.chatId = chatId;
+    
+    // Формируем контент меню (HTML)
+    globalMenu.innerHTML = `
+        <div class="global-dropdown-menu">
+            <ul class="dropdown-menu dropdown-menu-end show" style="position: static; display: block;">
+                <li>
+                    <a class="dropdown-item d-flex gap-2 align-items-center" href="#">
+                        <svg class="bi" width="16" height="16"><use xlink:href="/media/images/icons_menu.svg#export"/></svg>
+                        Экспорт
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex gap-2 align-items-center" href="#">
+                        <svg class="bi" width="16" height="16"><use xlink:href="/media/images/icons_menu.svg#share"/></svg>
+                        Поделиться
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex gap-2 align-items-center" href="#">
+                        <svg class="bi" width="16" height="16"><use xlink:href="/media/images/icons_menu.svg#rename"/></svg>
+                        Переименовать
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <a class="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center text-danger" href="#" onclick="deleteChat(event)">
+                        <svg class="bi" width="16" height="16" fill="currentColor"><use xlink:href="/media/images/icons_menu.svg#trash"/></svg>
+                        Удалить
+                    </a>
+                </li>
+            </ul>
+        </div>
+    `;
+
+    // Позиционируем глобальное меню
+    // 1) Получаем координаты кнопки, на которую кликнули
+    const rect = event.target.getBoundingClientRect();
+
+    // 2) Устанавливаем стили глобального контейнера
+    globalMenu.style.position = 'absolute';
+    globalMenu.style.top = (rect.bottom + window.scrollY) + 'px';
+    globalMenu.style.left = (rect.left + window.scrollX) + 'px';
+    globalMenu.style.zIndex = '9999';
+
+    // 3) Показываем контейнер
+    globalMenu.classList.remove('hidden');
+}
+
+function getCSRFToken() {
+    return document.querySelector("[name=csrfmiddlewaretoken]").value;
+}
+
+
+function deleteChat(event) {
+    event.preventDefault(); // Отменяем действие ссылки
+    const globalMenu = document.getElementById('global-menu-container');
+    const chatId = globalMenu.dataset.chatId;
+
+    if (!chatId) {
+        console.error("Chat ID не найден");
+        return;
+    }
+    
+    // Подтверждение удаления (опционально)
+    if (!confirm("Вы уверены, что хотите удалить чат?")) {
+        return;
+    }
+    
+    fetch(`/delete_chat/${chatId}/`, {
+        method: "POST", // или DELETE, в зависимости от настройки сервера
+        headers: {
+            "X-CSRFToken": getCSRFToken(), // функция для получения CSRF-токена
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Удаляем элемент чата из DOM
+            const chatElement = document.querySelector(`.chat-item[data-chat-id="${chatId}"]`);
+            if (chatElement) {
+                chatElement.remove();
+            }
+            // Скрываем глобальное меню
+            globalMenu.classList.add("hidden");
+            showNotification("Чат успешно удалён", "success");
+        } else {
+            showNotification("Ошибка удаления чата", "error");
+        }
+    })
+    .catch(error => {
+        console.error("Ошибка удаления чата:", error);
+        showNotification("Ошибка удаления чата", "error");
+    });
+}
+
+
+
+// Закрытие меню при клике вне его
+document.addEventListener('click', function(e) {
+    const globalContainer = document.getElementById('global-menu-container');
+    if (!globalContainer.contains(e.target) && !e.target.closest('.dropdown')) {
+        globalContainer.classList.add('hidden');
+    }
+});
+
+
+function selectSubject(button, subject) {
+
+    document.querySelectorAll("#subjects-container button").forEach(btn => {
+        btn.classList.remove("btn-primary");
+        btn.classList.add("btn-secondary");
+    });
+
+    button.classList.remove("btn-secondary");
+    button.classList.add("btn-primary");
+
     selectedSubject = subject;
 
     const chatBox = document.getElementById("chat-box");

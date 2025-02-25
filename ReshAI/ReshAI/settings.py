@@ -36,6 +36,8 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "app.resh-ai.ru",
     "www.app.resh-ai.ru"
+    "resh-ai.ru",
+    "www.resh-ai.ru",
 ]
 
 # Application definition
@@ -47,11 +49,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_hosts',
     'accounts.apps.AccountsConfig',
     'chatapp',
+    'mainapp',
 ]
 
 MIDDLEWARE = [
+    'django_hosts.middleware.HostsRequestMiddleware',
     'middleware.maintenance_middleware.MaintenanceModeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -60,11 +65,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_hosts.middleware.HostsResponseMiddleware',
 ]
 
-MAINTENANCE_MODE = True  # True - сайт в режиме тех.работ, False - сайт работает
+MAINTENANCE_MODE = False  # True - сайт в режиме тех.работ, False - сайт работает
 
-
+ROOT_HOSTCONF = 'ReshAI.hosts'
+DEFAULT_HOST = 'www'
 ROOT_URLCONF = 'ReshAI.urls'
 TEMPLATES = [
     {
@@ -92,8 +99,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'reshai',  # Имя вашей базы данных
         'USER': 'artem',  # Имя пользователя
-        'PASSWORD': 'Qz754wx04ec95',  # Пароль server
-        # 'PASSWORD': 'reshai',  # Пароль local
+        # 'PASSWORD': 'Qz754wx04ec95',  # Пароль server
+        'PASSWORD': 'reshai',  # Пароль local
         'HOST': 'localhost',
         'PORT': '5432',
     }
