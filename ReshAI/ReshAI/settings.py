@@ -37,7 +37,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "app.resh-ai.ru",
-    "www.app.resh-ai.ru"
+    "www.app.resh-ai.ru",
     "resh-ai.ru",
     "www.resh-ai.ru",
 ]
