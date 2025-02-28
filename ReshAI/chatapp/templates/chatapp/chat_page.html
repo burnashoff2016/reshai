@@ -6,7 +6,7 @@
         <div id="notification-container"></div>
 
         <aside class="subjects-menu">
-            <h3>Выберите предмет</h3>
+            <h3>Загрузите документ и выберите предмет</h3>
 
             <div class="d-flex gap-2 justify-content-center py-2"id = "subjects-container">
                 <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Математика')">Математика</button>
@@ -19,25 +19,6 @@
                 <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Астрономия')">Астрономия</button>
                 <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Философия')">Философия</button>
             </div>
-
-
-            {% comment %} <ul>
-                <li onclick="selectSubject('Математика')" id="subject-math">
-                    <img src="/media/images/physics.png" alt="Математика" class="subject-logo"> Математика
-                </li>
-                <li onclick="selectSubject('Физика')" id="subject-phy">
-                    <img src="/media/images/physics.png" alt="Физика" class="subject-logo"> Физика
-                </li>
-                <li onclick="selectSubject('История')" id="subject-history">
-                    <img src="/media/images/physics.png" alt="История" class="subject-logo"> История
-                </li>
-                <li onclick="selectSubject('Химия')" id="subject-chemistry">
-                    <img src="/media/images/physics.png" alt="Химия" class="subject-logo"> Химия
-                </li>
-                <li onclick="selectSubject('Биология')" id="subject-biology">
-                    <img src="/media/images/physics.png" alt="Биология" class="subject-logo"> Биология
-                </li>
-            </ul> {% endcomment %}
         </aside>
 
         <input type="hidden" id="chat-id" value="{{ chat.id|default:'' }}">
@@ -52,6 +33,112 @@
             <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
         </div>
     </section>
+
+<!--    <div class="col-md-3">-->
+<!--    <div class="container mt-5 p-3 bg-light rounded-3 shadow-lg">-->
+<!--        <h4 class="text-warning mb-4">Настройки теста</h4>-->
+<!--        <form>-->
+<!--            <div class="row g-3">-->
+<!--                &lt;!&ndash; Укажите количество вопросов &ndash;&gt;-->
+<!--                <div class="col-12">-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="question-count" class="form-label">Укажите количество вопросов:</label>-->
+<!--                        <input type="number" class="form-control form-control-lg" id="question-count" name="question_count" placeholder="Введите количество вопросов" required min="1" max="5" step="1">-->
+<!--                        &lt;!&ndash; Кнопки для выбора количества &ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="btn-group w-100 mt-2" role="group">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('question-count', 1)">1</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('question-count', 2)">2</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('question-count', 3)">3</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('question-count', 4)">4</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('question-count', 5)">5</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Укажите тему теста &ndash;&gt;-->
+<!--                <div class="col-12">-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="topic" class="form-label">Укажите тему теста:</label>-->
+<!--                        <input type="text" class="form-control form-control-lg" id="topic" name="topic" placeholder="Введите тему теста" required>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Укажите ключевые слова &ndash;&gt;-->
+<!--                <div class="col-12">-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="keywords" class="form-label">Укажите ключевые слова:</label>-->
+<!--                        <input type="text" class="form-control form-control-lg" id="keywords" name="keywords" placeholder="Введите ключевые слова" required>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Уровень сложности &ndash;&gt;-->
+<!--                <div class="col-12">-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="difficulty-level" class="form-label">Уровень сложности:</label>-->
+<!--                        <select class="form-select form-select-lg" id="difficulty-level" name="difficulty_level" required>-->
+<!--                            <option value="" disabled selected>Выберите уровень</option>-->
+<!--                            <option value="Начальный">Начальный</option>-->
+<!--                            <option value="Средний">Средний</option>-->
+<!--                            <option value="Продвинутый">Продвинутый</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Вопросы с одним вариантом ответа &ndash;&gt;-->
+<!--                <div class="col-12">-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="single-choice-count" class="form-label">Вопросы с одним вариантом ответа:</label>-->
+<!--                        <input type="number" class="form-control form-control-lg" id="single-choice-count" name="single_choice_count" placeholder="Введите количество" required min="1" max="5" step="1">-->
+<!--                        &lt;!&ndash; Кнопки для выбора количества &ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="btn-group w-100 mt-2" role="group">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('single-choice-count', 1)">1</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('single-choice-count', 2)">2</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('single-choice-count', 3)">3</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('single-choice-count', 4)">4</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('single-choice-count', 5)">5</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Вопросы с множественным выбором &ndash;&gt;-->
+<!--                <div class="col-12">-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="multiple-choice-count" class="form-label">Вопросы с множественным выбором:</label>-->
+<!--                        <input type="number" class="form-control form-control-lg" id="multiple-choice-count" name="multiple_choice_count" placeholder="Введите количество" required min="1" max="5" step="1">-->
+<!--                        &lt;!&ndash; Кнопки для выбора количества &ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="btn-group w-100 mt-2" role="group">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('multiple-choice-count', 1)">1</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('multiple-choice-count', 2)">2</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('multiple-choice-count', 3)">3</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('multiple-choice-count', 4)">4</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('multiple-choice-count', 5)">5</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Вопросы с пропущенным словом &ndash;&gt;-->
+<!--                <div class="col-12">-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="gap-fill-count" class="form-label">Вопросы с пропущенным словом:</label>-->
+<!--                        <input type="number" class="form-control form-control-lg" id="gap-fill-count" name="gap_fill_count" placeholder="Введите количество" required min="1" max="5" step="1">-->
+<!--                        &lt;!&ndash; Кнопки для выбора количества &ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="btn-group w-100 mt-2" role="group">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('gap-fill-count', 1)">1</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('gap-fill-count', 2)">2</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('gap-fill-count', 3)">3</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('gap-fill-count', 4)">4</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('gap-fill-count', 5)">5</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--            </div>-->
+
+<!--            <button type="submit" id="generate-test" class="btn btn-warning text-dark mt-3 w-100">Составить тест</button>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->
+
 </main>
     {% endblock %}
 

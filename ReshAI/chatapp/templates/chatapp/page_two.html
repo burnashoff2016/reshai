@@ -1,143 +1,168 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles3.css' %}">
-    <link rel="icon" type="image/png" href="{% static 'images/favicon-96x96.png' %}" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}" />
-    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}" />
-    <meta name="apple-mobile-web-app-title" content="ReshAI" />
-    <link rel="manifest" href="{% static 'images/site.webmanifest' %}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
-    <title>ReshAI</title>
-</head>
-<body>
+{% extends 'base_app.html' %}
 
-<header class="top-nav">
-    <button class="menu-toggle" id="menu-toggle">☰</button>
-    <div class="logo">ReshAI</div>
-    {% if user.is_authenticated %}
-        <nav>
-            <ul>
-                <li><a href='{% url "chatbot" %}' class="active">Чат</a></li>
-                <li><a href="#">Личный кабинет</a></li>
-                <li><a href="#">Настройки</a></li>
-                <li>
-                    <form action="{% url 'logout' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-custom btn-lg">Выход</button>
-                    </form>
-                </li>
-            </ul>
-        </nav>
-    {% else %}
-        <nav>
-            <ul>
-                <li><a href='{% url "chatbot" %}' class="active">Чат</a></li>
-                <li><a href='{% url "login" %}'>Вход</a></li>
-                <li><a href='{% url "signup" %}'>Регистрация</a></li>
-            </ul>
-        </nav>
-    {% endif %}
-</header>
+{% block content %}
+<main class="bg-dark page-chat">
+    <section class="chat-container">
+        <div id="notification-container"></div>
 
+<!--        <aside class="subjects-menu">-->
+<!--            <h3>Выберите предмет</h3>-->
 
-<main>
+<!--            <div class="d-flex gap-2 justify-content-center py-2"id = "subjects-container">-->
+<!--                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Математика')">Математика</button>-->
+<!--                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Физика')">Физика</button>-->
+<!--                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'История')">История</button>-->
+<!--                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Химия')">Химия</button>-->
+<!--                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Биология')">Биология</button>-->
+<!--                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Социология')">Социология</button>-->
+<!--                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Экономика')">Экономика</button>-->
+<!--                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Астрономия')">Астрономия</button>-->
+<!--                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Философия')">Философия</button>-->
+<!--            </div>-->
+<!--        </aside>-->
 
-    <div id="sidebar" class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
-        <a href="/" class="d-flex align-items-center mb-3 text-white text-decoration-none">
-                <img src="/media/images/image_bar.png" alt="ReshAI Logo" width="32" height="32" class="me-2">
+        <input type="hidden" id="chat-id" value="{{ chat.id|default:'' }}">
+        <div id="global-menu-container"></div>
+         <div id="chat-box" class="chat-box">
+            <div class="system-message">Заполните конструктор, чтобы начать чат.</div>
+         </div>
 
-            <span class="fs-4">ReshAI</span>
-        </a>
-        <hr>
-        <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item">
-                <a href="/" class="nav-link text-white">
-                    <i class="fas fa-file-alt me-2" style="width: 20px; text-align: center;"></i> Файлы
-                </a>
-            </li>
-            <li>
-                <a href="/page_one" class="nav-link text-white">
-                    <i class="fas fa-photo-video me-2"></i> Медиа
-                </a>
-            </li>
-            <li>
-                <a href="/page_two" class="nav-link active text-white">
-                    <i class="fas fa-comments me-2"></i> Чат
-                </a>
-            </li>
-        </ul>
-        <hr>
-        <div class="dropdown">
-            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="/media/images/users.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>{{ user.username }}</strong>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                <li><a class="dropdown-item" href="#">Настройки</a></li>
-                <li><a class="dropdown-item" href="{% url 'profile' %}">Профиль</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li>
-                    <form action="{% url 'logout' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-custom btn-lg">Выход</button>
-                    </form>
-                </li>
-            </ul>
-        </div>
+<!--        <div class="chat-input-container">-->
+<!--            <textarea id="user-message" placeholder="Введите ваше сообщение..."></textarea>-->
+<!--            <button id="open-upload-modal" class="upload-trigger"><i class="fas fa-upload"></i></button>-->
+<!--            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>-->
+<!--        </div>-->
+    </section>
+
+    <div class="col-md-3">
+    <div class="container mt-5 p-3 bg-light rounded-3 shadow-lg">
+        <h4 class="text-warning mb-4">Настройки теста</h4>
+        <form>
+            <div class="row g-3">
+                <!-- Укажите количество вопросов -->
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="question-count" class="form-label">Укажите количество вопросов:</label>
+                        <input type="number" class="form-control form-control-lg" id="question-count" name="question_count" placeholder="Введите количество вопросов" required min="1" max="5" step="1">
+                        <!-- Кнопки для выбора количества -->
+<!--                        <div class="btn-group w-100 mt-2" role="group">-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('question-count', 1)">1</button>-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('question-count', 2)">2</button>-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('question-count', 3)">3</button>-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('question-count', 4)">4</button>-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('question-count', 5)">5</button>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+
+                <!-- Укажите тему теста -->
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="topic" class="form-label">Укажите тему теста:</label>
+                        <input type="text" class="form-control form-control-lg" id="topic" name="topic" placeholder="Введите тему теста" required>
+                    </div>
+                </div>
+
+                <!-- Укажите ключевые слова -->
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="keywords" class="form-label">Укажите ключевые слова:</label>
+                        <input type="text" class="form-control form-control-lg" id="keywords" name="keywords" placeholder="Введите ключевые слова" required>
+                    </div>
+                </div>
+
+                <!-- Уровень сложности -->
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="difficulty-level" class="form-label">Уровень сложности:</label>
+                        <select class="form-select form-select-lg" id="difficulty-level" name="difficulty_level" required>
+                            <option value="" disabled selected>Выберите уровень</option>
+                            <option value="Начальный">Начальный</option>
+                            <option value="Средний">Средний</option>
+                            <option value="Продвинутый">Продвинутый</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Вопросы с одним вариантом ответа -->
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="single-choice-count" class="form-label">Вопросы с одним вариантом ответа:</label>
+                        <input type="number" class="form-control form-control-lg" id="single-choice-count" name="single_choice_count" placeholder="Введите количество" required min="1" max="5" step="1">
+                        <!-- Кнопки для выбора количества -->
+<!--                        <div class="btn-group w-100 mt-2" role="group">-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('single-choice-count', 1)">1</button>-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('single-choice-count', 2)">2</button>-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('single-choice-count', 3)">3</button>-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('single-choice-count', 4)">4</button>-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('single-choice-count', 5)">5</button>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+
+                <!-- Вопросы с множественным выбором -->
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="multiple-choice-count" class="form-label">Вопросы с множественным выбором:</label>
+                        <input type="number" class="form-control form-control-lg" id="multiple-choice-count" name="multiple_choice_count" placeholder="Введите количество" required min="1" max="5" step="1">
+                        <!-- Кнопки для выбора количества -->
+<!--                        <div class="btn-group w-100 mt-2" role="group">-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('multiple-choice-count', 1)">1</button>-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('multiple-choice-count', 2)">2</button>-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('multiple-choice-count', 3)">3</button>-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('multiple-choice-count', 4)">4</button>-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('multiple-choice-count', 5)">5</button>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+
+                <!-- Вопросы с пропущенным словом -->
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="gap-fill-count" class="form-label">Вопросы с пропущенным словом:</label>
+                        <input type="number" class="form-control form-control-lg" id="gap-fill-count" name="gap_fill_count" placeholder="Введите количество" required min="1" max="5" step="1">
+                        <!-- Кнопки для выбора количества -->
+<!--                        <div class="btn-group w-100 mt-2" role="group">-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('gap-fill-count', 1)">1</button>-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('gap-fill-count', 2)">2</button>-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('gap-fill-count', 3)">3</button>-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('gap-fill-count', 4)">4</button>-->
+<!--                            <button type="button" class="btn btn-outline-primary btn-sm rounded-3" onclick="setNumber('gap-fill-count', 5)">5</button>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+
+            </div>
+
+           <button type="button" id="generate-test" class="btn btn-warning text-dark mt-3 w-100" onclick="sendMessage()">Составить тест</button>
+
+        </form>
     </div>
-    <aside class="sidebar-menu" id="sidebar-menu">
-    <nav>
-        <ul>
-            <li><a href="/">Файлы</a></li>
-            <li><a href="/page_one">Медиа</a></li>
-            <li><a href="/page_two" class="active">Чат</a></li>
-        </ul>
-    </nav>
-</aside>
-
-<div class="prompt-builder">
-    <label for="question-count">Укажите количество вопросов:</label>
-    <input type="number" id="question-count" name="question_count" placeholder="Введите количество вопросов" required>
-
-    <label for="topic">Укажите тему теста:</label>
-    <input type="text" id="topic" name="topic" placeholder="Введите тему теста" required>
-
-    <label for="keywords">Укажите ключевые слова:</label>
-    <input type="text" id="keywords" name="keywords" placeholder="Введите ключевые слова" required>
-
-    <label for="difficulty-level">Уровень сложности:</label>
-    <select id="difficulty-level" name="difficulty_level" required>
-        <option value="" disabled selected>Выберите уровень</option>
-        <option value="Начальный">Начальный</option>
-        <option value="Средний">Средний</option>
-        <option value="Продвинутый">Продвинутый</option>
-    </select>
-
-    <label for="single-choice-count">Вопросы с одним вариантом ответа:</label>
-    <input type="number" id="single-choice-count" name="single_choice_count" placeholder="Введите количество" required>
-
-    <label for="multiple-choice-count">Вопросы с множественным выбором:</label>
-    <input type="number" id="multiple-choice-count" name="multiple_choice_count" placeholder="Введите количество" required>
-
-    <label for="gap-fill-count">Вопросы с пропущенным словом:</label>
-    <input type="number" id="gap-fill-count" name="gap_fill_count" placeholder="Введите количество" required>
-
-    <button type="submit" id="generate-test">Составить тест</button>
 </div>
 
-    <section class="chat-container">
-        <div id="chat-box" class="chat-box">
-            <div class="system-message">Введи данные в конструктор!</div>
-        </div>
-    </section>
+<script>
+    // Функция для установки значения в поле ввода
+    function setNumber(inputId, value) {
+        document.getElementById(inputId).value = value;
+    }
+</script>
+
+
+
 </main>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" defer></script>
-<script src="{% static 'js/app3.js' %}" defer></script>
-</body>
-</html>
+    {% endblock %}
+
+
+    {% block modals %}
+    <div id="upload-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Загрузите аудио</h3>
+            <form id="upload-form" enctype="multipart/form-data" method="POST">
+                {% csrf_token %}
+                <input type="file" name="document" id="document" accept=".mp3, .mp4">
+                <button type="submit" class="upload-button">Загрузить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

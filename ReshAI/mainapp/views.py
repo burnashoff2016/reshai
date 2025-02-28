@@ -9,6 +9,9 @@ def about(request):
 def contact(request):
     return render(request, 'mainapp/contact.html')
 
+def price(request):
+    return render(request, 'mainapp/price.html')
+
 def chat_redirect(request):
     # Перенаправление на страницу chatapp
     return redirect('/chat/')

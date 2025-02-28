@@ -1,0 +1,86 @@
+:root {
+  --primary-color: #ff6b00;
+  --text-color: #ffffff;
+  --bg-dark: #121212;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.cover-container {
+  max-width: 60em;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+header {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+a.d-flex {
+  margin: 0;
+  padding: 0;
+}
+
+.logo-large {
+  width: 75%;
+  height: auto;
+  display: block;
+  margin-bottom: 20px; /* Отступ после логотипа */
+}
+
+.navbar {
+  margin-top: 0;
+  padding: 0;
+}
+
+.nav-masthead .nav-link {
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 600;
+}
+
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+  color: white;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  border: none;
+  font-size: 1.1rem;
+  padding: 12px 24px;
+}
+
+.btn-primary:hover {
+  background: #e65a00;
+}
+
+footer {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #ffffff;
+  margin: 20px 0; /* Отступы сверху и снизу от черты */
+}
+
+main {
+  margin-top: 20px; /* Отступ сверху */
+  text-align: center; /* Центрирование текста */
+}

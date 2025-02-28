@@ -57,6 +57,25 @@ html, body {
     max-width: 50%;
 }
 
+.page-chat .system-message {
+    background: #ffa500;
+    color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.1em;
+    text-align: center;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease-out forwards;
+    margin: 0 auto;
+    width: 70%; /* Увеличили ширину до 60% */
+    max-width: 80%; /* Максимальная ширина 70% */
+}
+
+
 @keyframes fadeInUp {
     0% {
         opacity: 0;

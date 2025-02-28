@@ -313,21 +313,21 @@ function selectSubject(button, subject) {
             if (!response.body) {
                 throw new Error("Ответ не содержит тела.");
             }
-    
+
             typingIndicator.remove();
-    
+
             scrollToBottom();
-    
+
             const reader = response.body.getReader();
             const decoder = new TextDecoder("utf-8");
-                
+
             const botMessageDiv = document.createElement('div');
             botMessageDiv.className = "chat-message bot";
             chatBox.appendChild(botMessageDiv);
 
             let accumulatedText = '';
             let htmlContent = '';
-    
+
             const processStream = ({ done, value }) => {
                 if (done) {
                     htmlContent = marked.parse(accumulatedText);
@@ -335,21 +335,21 @@ function selectSubject(button, subject) {
                     chatBox.scrollTop = chatBox.scrollHeight;
                     return;
                 }
-        
+
                 const chunk = decoder.decode(value, { stream: true });
                 console.log("Полученный фрагмент:", chunk);
-        
+
                 accumulatedText += chunk;
-        
+
                 htmlContent = marked.parse(accumulatedText);
-        
+
                 botMessageDiv.innerHTML = htmlContent;
-        
+
                 chatBox.scrollTop = chatBox.scrollHeight;
-        
+
                 reader.read().then(processStream);
             };
-    
+
             reader.read().then(processStream);
         })
         .catch(error => {

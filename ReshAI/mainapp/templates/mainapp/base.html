@@ -1,36 +1,52 @@
-<!DOCTYPE html>
-<html lang="ru">
+<!doctype html>
+<html lang="ru" class="h-100" data-bs-theme="auto">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}ReshAI{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styless.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/favicon-96x96.png' %}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}" />
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}" />
+    <meta name="apple-mobile-web-app-title" content="ReshAI" />
+    <link rel="manifest" href="{% static 'images/site.webmanifest' %}" />
+
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="/">ReshAI</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Главная</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">О нас</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Контакты</a></li>
-                </ul>
+<body class="d-flex h-100 text-white bg-dark">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <header class="d-flex justify-content-between align-items-center pb-0 mb-0 border-bottom w-100">
+            <div>
+                <a href="/" class="d-flex align-items-center mb-0 text-white text-decoration-none">
+                    <img src="/media/images/logo_2.png" alt="ReshAI Logo" class="logo-large">
+                </a>
             </div>
-        </div>
-    </nav>
+            <nav class="nav nav-masthead justify-content-center float-md-end mb-0">
+                <a class="nav-link active" href="{% url 'index' %}">Главная</a>
+                <a class="nav-link" href="{% url 'about' %}">Функции</a>
+                <a class="nav-link" href="{% url 'contact' %}">Контакты</a>
+                <a class="nav-link" href="{% url 'price' %}">Цены</a>
+            </nav>
+        </header>
 
-    <div class="container mt-4">
-        {% block content %}{% endblock %}
+        <main class="px-3 flex-grow-1 d-flex justify-content-center align-items-center">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="mt-auto text-white-50">
+            <p>&copy; 2025 ReshAI. Все права защищены.</p>
+        </footer>
     </div>
-
-    <footer class="bg-dark text-white text-center py-3 mt-4">
-        © 2025 ReshAI. Все права защищены.
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
+
+
+<!--<nav>-->
+<!--                <a href="#">Документация</a>-->
+<!--                <a href="#">Контакты</a>-->
+<!--                <a href="#">GitHub</a>-->
+<!--            </nav>-->

@@ -6,26 +6,23 @@
         <div id="notification-container"></div>
 
         <aside class="subjects-menu">
-            <h3>Выберите предмет</h3>
-            <ul>
-                <li onclick="selectSubject('Математика')" id="subject-math">
-                    <img src="/media/images/physics.png" alt="Математика" class="subject-logo"> Математика
-                </li>
-                <li onclick="selectSubject('Физика')" id="subject-phy">
-                    <img src="/media/images/physics.png" alt="Физика" class="subject-logo"> Физика
-                </li>
-                <li onclick="selectSubject('История')" id="subject-history">
-                    <img src="/media/images/physics.png" alt="История" class="subject-logo"> История
-                </li>
-                <li onclick="selectSubject('Химия')" id="subject-chemistry">
-                    <img src="/media/images/physics.png" alt="Химия" class="subject-logo"> Химия
-                </li>
-                <li onclick="selectSubject('Биология')" id="subject-biology">
-                    <img src="/media/images/physics.png" alt="Биология" class="subject-logo"> Биология
-                </li>
-            </ul>
+            <h3>Загрузите видео-аудио и выберите предмет</h3>
+
+            <div class="d-flex gap-2 justify-content-center py-2"id = "subjects-container">
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Математика')">Математика</button>
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Физика')">Физика</button>
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'История')">История</button>
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Химия')">Химия</button>
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Биология')">Биология</button>
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Социология')">Социология</button>
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Экономика')">Экономика</button>
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Астрономия')">Астрономия</button>
+                <button class="btn btn-secondary rounded-pill px-3" type="button" onclick="selectSubject(this, 'Философия')">Философия</button>
+            </div>
         </aside>
 
+        <input type="hidden" id="chat-id" value="{{ chat.id|default:'' }}">
+        <div id="global-menu-container"></div>
          <div id="chat-box" class="chat-box">
             <div class="system-message">Выберите предмет, чтобы начать чат.</div>
         </div>
@@ -41,15 +38,16 @@
 
 
     {% block modals %}
-    <div id="upload-modal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h3>Загрузите аудио</h3>
-            <form id="upload-form" enctype="multipart/form-data" method="POST">
-                {% csrf_token %}
-                <input type="file" name="document" id="document" accept=".mp3, .mp4">
-                <button type="submit" class="upload-button">Загрузить</button>
-            </form>
-        </div>
+<div id="upload-modal" class="modal hidden">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3>Загрузите аудио</h3>
+        <form id="upload-form" action="/page_one/" enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            <input type="file" name="document" id="document" accept="audio/*,video/*" class="file-input">
+            <button type="submit" class="upload-button">Загрузить</button>
+        </form>
     </div>
+</div>
+
 {% endblock %}
